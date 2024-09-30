@@ -1,0 +1,43 @@
+﻿@page "/Login"
+@using HealFit.DTO.Request
+@using HealFit.Model
+@using HealFit.Service
+@inject IUsuarioService UsuarioService
+@inject NavigationManager Navigation
+
+<h3>Login</h3>
+
+<EditForm Model="requestUsuarioDTO" OnSubmit="Logar">
+
+    <input type="email" @bind="requestUsuarioDTO.Email" placeholder="Email" name="name" />
+    <input type="password" @bind="requestUsuarioDTO.Senha" placeholder="Senha" name="name" />
+    <button type="submit">Login</button>
+
+</EditForm>
+
+
+@code {
+
+    private RequestUsuarioDTO requestUsuarioDTO = new RequestUsuarioDTO();
+    private List<UsuarioModel> usuarios;
+
+    private async Task Logar() {
+
+        var usuarios = await UsuarioService.GetAllUsuarios();
+
+        var usuario = usuarios.FirstOrDefault(u => u.Email == requestUsuarioDTO.Email && u.Senha == requestUsuarioDTO.Senha);
+
+        if (usuario != null) {
+
+            Navigation.NavigateTo("/Home");
+        }
+        else {
+            DisplayAlert("Erro", "Usuario ou Senha inválido", "Ok");
+        }
+    }
+
+    private async Task DisplayAlert(string title, string message, string cancel) {
+
+        await Application.Current.MainPage.DisplayAlert(title, message, cancel);
+    }
+}

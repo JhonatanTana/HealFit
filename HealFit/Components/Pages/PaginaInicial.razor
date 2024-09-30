@@ -1,7 +1,17 @@
 ﻿@page "/"
+@inject NavigationManager Navigation
 
-<h3>PaginaInicial</h3>
+<button class="btn btn-primary" @onclick="login">Login</button>
+<button class="btn btn-primary" @onclick="registrar">Registrar</button>
 
 @code {
+
+    private void login() {
+        Navigation.NavigateTo("/Login");
+    }
+
+    private void registrar() {
+        Navigation.NavigateTo("/Registrar");
+    }
 
 }

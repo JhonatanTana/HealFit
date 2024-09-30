@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using HealFit.Service;
+using Microsoft.Extensions.Logging;
 
 namespace HealFit {
     public static class MauiProgram {
@@ -16,6 +17,8 @@ namespace HealFit {
     		builder.Services.AddBlazorWebViewDeveloperTools();
     		builder.Logging.AddDebug();
 #endif
+            builder.Services.AddSingleton<IUsuarioService, UsuarioService>();
+
 
             return builder.Build();
         }

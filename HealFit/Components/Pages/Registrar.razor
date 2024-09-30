@@ -1,0 +1,67 @@
+﻿@page "/Registrar"
+@using HealFit.DTO.Request
+@using HealFit.Model
+@using HealFit.Service
+@inject IUsuarioService UsuarioService
+@inject NavigationManager Navigation
+
+<h3>Registre-se</h3>
+
+<EditForm Model="registroUsuarioDTO" OnSubmit="RegistrarUsuario" class="flex flex-column flex-nowrap w-100 h-100">
+
+    <div>
+        <input type="email" @bind="registroUsuarioDTO.Email" name="email" placeholder="Email" />
+    </div>
+    <div>
+        <input type="password" @bind="registroUsuarioDTO.Senha" name="senha" placeholder="Senha" />
+    </div>
+    <div>
+        <input type="password" @bind="registroUsuarioDTO.ConfSenha" name="confSenha" placeholder="Confirmação de Senha" />
+    </div>
+
+    <button class="btn btn-primary">Registrar</button>
+</EditForm>
+
+@code {
+
+    private registroUsuarioDTODTORequest registroUsuarioDTO = new registroUsuarioDTODTORequest();
+
+    private List<UsuarioModel> usuarios;
+
+    private async Task RegistrarUsuario() {
+
+        if (registroUsuarioDTO.Senha != registroUsuarioDTO.ConfSenha) {
+            await DisplayAlert("Erro", "As senhas não coincidem", "Ok");
+            return;
+        }
+
+        usuarios = await UsuarioService.GetAllUsuarios();
+
+        if (usuarios.Any(u => u.Email == registroUsuarioDTO.Senha)) // Verifica se o usuário já existe
+        {
+            await DisplayAlert("Erro", "Usuário já existente", "Ok");
+        }
+        else {
+
+            var usuarioModelo = new UsuarioModel { Email = registroUsuarioDTO.Email, Senha = registroUsuarioDTO.Senha };
+            var response = await UsuarioService.AddUsuario(usuarioModelo);
+
+
+            if (response > 0) // Verifica se o usuário foi cadastrado com sucesso
+            {
+                await DisplayAlert("Sucesso", $"Usuário {email} cadastrado com sucesso", "Ok");
+                Navigation.NavigateTo("/Home");
+            }
+            else {
+                await DisplayAlert("Erro", "Erro ao cadastrar", "Ok");
+            }
+        }
+
+    }
+
+    private async Task DisplayAlert(string title, string message, string cancel) {
+
+        await Application.Current.MainPage.DisplayAlert(title, message, cancel);
+    }
+
+}
