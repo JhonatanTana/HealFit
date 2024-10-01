@@ -12,9 +12,9 @@ public class CadastraDadosDTORequest {
     public int DadosId { get; set; }
     public string Nome { get; set; }
     public string Sobrenome { get; set; }
-    public DateTime DataNascimento { get; set; }
-    public double Peso { get; set; }
-    public int Cep { get; set; }
+    public DateTime DataNascimento { get; set; } = DateTime.Now;
+    public string Peso { get; set; }
+    public string Cep { get; set; }
     public string Cidade { get; set; }
     public string Estado { get; set; }
     public string Pais { get; set; }

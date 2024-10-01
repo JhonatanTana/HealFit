@@ -39,8 +39,10 @@ public class DadosService : IDadosService {
         return await _dbConnection.Table<DadosPessoaisModel>().ToListAsync();
     }
 
-    public Task<DadosPessoaisModel> GetDadosById(int registroId) {
-        throw new NotImplementedException();
+    public async Task<DadosPessoaisModel> GetDadosById(int usuarioId) {
+
+        return await _dbConnection.Table<DadosPessoaisModel>().FirstOrDefaultAsync(c => c.UsuarioId == usuarioId);
+
     }
 
     public Task<int> UpdateDados(DadosPessoaisModel dados) {

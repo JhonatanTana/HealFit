@@ -6,18 +6,19 @@
 @inject NavigationManager Navigation
 
 <section class="content px-4">
-    <h3>Registre-se</h3>
 
-    <EditForm Model="registroUsuarioDTO" OnSubmit="RegistrarUsuario" class="flex flex-column flex-nowrap w-100 h-100">
+    <h3 class="mb-3">Registre-se</h3>
 
-        <div>
-            <input type="email" @bind="registroUsuarioDTO.Email" name="email" placeholder="Email" />
+    <EditForm Model="registroUsuarioDTO" OnSubmit="RegistrarUsuario" class="flex flex-column flex-nowrap w-100">
+
+        <div class="mb-3">
+            <input type="email" @bind="registroUsuarioDTO.Email" name="email" placeholder="Email" class="w-100 p-2 rounded border border-1 border-secondary" />
         </div>
-        <div>
-            <input type="password" @bind="registroUsuarioDTO.Senha" name="senha" placeholder="Senha" />
+        <div class="mb-3">
+            <input type="password" @bind="registroUsuarioDTO.Senha" name="senha" placeholder="Senha" class="w-100 p-2 rounded border border-1 border-secondary" />
         </div>
-        <div>
-            <input type="password" @bind="registroUsuarioDTO.ConfSenha" name="confSenha" placeholder="Confirmação de Senha" />
+        <div class="mb-3">
+            <input type="password" @bind="registroUsuarioDTO.ConfSenha" name="confSenha" placeholder="Confirmação de Senha" class="w-100 p-2 rounded border border-1 border-secondary"  />
         </div>
 
         <button class="btn btn-primary">Registrar</button>

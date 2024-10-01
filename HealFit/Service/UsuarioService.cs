@@ -26,10 +26,6 @@ public class UsuarioService : IUsuarioService {
         return usuario.UsuarioId; // Retorna o ID do usuário recém-criado
     }
 
-    public Task<int> DeleteUsuario(UsuarioModel usuario) {
-        throw new NotImplementedException();
-    }
-
     public Task<int> DeleteUsuarioById(int registroId) {
         throw new NotImplementedException();
     }

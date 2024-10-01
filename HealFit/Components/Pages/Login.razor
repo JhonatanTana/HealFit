@@ -3,17 +3,21 @@
 @using HealFit.Model
 @using HealFit.Service
 @inject IUsuarioService UsuarioService
+@inject IDadosService DadosService
 @inject NavigationManager Navigation
 
 <section class="content px-4">
 
-    <h3>Login</h3>
+    <h3 class="mb-3">Login</h3>
 
-    <EditForm Model="requestUsuarioDTO" OnSubmit="Logar">
-
-        <input type="email" @bind="requestUsuarioDTO.Email" placeholder="Email" name="name" />
-        <input type="password" @bind="requestUsuarioDTO.Senha" placeholder="Senha" name="name" />
-        <button type="submit">Login</button>
+    <EditForm Model="requestUsuarioDTO" OnSubmit="Logar" class="flex flex-column w-100">
+        <div class="mb-3">
+            <input type="email" @bind="requestUsuarioDTO.Email" placeholder="Email" name="name" class="w-100 p-2 rounded border border-1 border-secondary" />
+        </div>
+        <div class="mb-3">
+            <input type="password" @bind="requestUsuarioDTO.Senha" placeholder="Senha" name="name" class="w-100 p-2 rounded border border-1 border-secondary" />
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Login</button>
 
     </EditForm>
 
@@ -30,9 +34,19 @@
 
         var usuario = usuarios.FirstOrDefault(u => u.Email == requestUsuarioDTO.Email && u.Senha == requestUsuarioDTO.Senha);
 
+        var dadosPessoais = await DadosService.GetDadosById(usuario.UsuarioId);
+
         if (usuario != null) {
 
-            Navigation.NavigateTo("/Home");
+            if(dadosPessoais == null) {
+
+                Navigation.NavigateTo($"/CadastroDados/{usuario.UsuarioId}");
+            }
+            else {
+                
+                Navigation.NavigateTo("/Home");
+            }
+
         }
         else {
             DisplayAlert("Erro", "Usuario ou Senha inválido", "Ok");
