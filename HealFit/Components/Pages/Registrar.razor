@@ -5,26 +5,28 @@
 @inject IUsuarioService UsuarioService
 @inject NavigationManager Navigation
 
-<h3>Registre-se</h3>
+<section class="content px-4">
+    <h3>Registre-se</h3>
 
-<EditForm Model="registroUsuarioDTO" OnSubmit="RegistrarUsuario" class="flex flex-column flex-nowrap w-100 h-100">
+    <EditForm Model="registroUsuarioDTO" OnSubmit="RegistrarUsuario" class="flex flex-column flex-nowrap w-100 h-100">
 
-    <div>
-        <input type="email" @bind="registroUsuarioDTO.Email" name="email" placeholder="Email" />
-    </div>
-    <div>
-        <input type="password" @bind="registroUsuarioDTO.Senha" name="senha" placeholder="Senha" />
-    </div>
-    <div>
-        <input type="password" @bind="registroUsuarioDTO.ConfSenha" name="confSenha" placeholder="Confirmação de Senha" />
-    </div>
+        <div>
+            <input type="email" @bind="registroUsuarioDTO.Email" name="email" placeholder="Email" />
+        </div>
+        <div>
+            <input type="password" @bind="registroUsuarioDTO.Senha" name="senha" placeholder="Senha" />
+        </div>
+        <div>
+            <input type="password" @bind="registroUsuarioDTO.ConfSenha" name="confSenha" placeholder="Confirmação de Senha" />
+        </div>
 
-    <button class="btn btn-primary">Registrar</button>
-</EditForm>
+        <button class="btn btn-primary">Registrar</button>
+    </EditForm>
+</section>
 
 @code {
 
-    private registroUsuarioDTODTORequest registroUsuarioDTO = new registroUsuarioDTODTORequest();
+    private RegistroUsuarioDTORequest registroUsuarioDTO = new RegistroUsuarioDTORequest();
 
     private List<UsuarioModel> usuarios;
 
@@ -49,8 +51,7 @@
 
             if (response > 0) // Verifica se o usuário foi cadastrado com sucesso
             {
-                await DisplayAlert("Sucesso", $"Usuário {email} cadastrado com sucesso", "Ok");
-                Navigation.NavigateTo("/Home");
+                Navigation.NavigateTo($"/CadastroDados/{response}");
             }
             else {
                 await DisplayAlert("Erro", "Erro ao cadastrar", "Ok");

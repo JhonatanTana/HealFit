@@ -3,28 +3,14 @@
 @using HealFit.Components.Layout
 @using HealFit.Model
 @using HealFit.Service
-@inject IUsuarioService UsuarioService
+@inject IDadosService UsuarioService
 
 <NavMenu></NavMenu>
 
-<h3>Inicio</h3>
-
-@* @foreach (var usuario in usuarios) {
-    <div class="d-flex justify-content-between align-items-center m-2">
-        <span>@usuario.Email</span>
-        <div class="d-flex">
-            <button class="btn btn-primary me-2">Editar</button>
-            <button class="btn btn-danger ms-2">Deletar</button>
-        </div>
-    </div>
-} *@
+<section class="content px-4">
+    <h3>Inicio</h3>
+</section>
 
 @code {
 
-    // private List<UsuarioModel> usuarios = new List<UsuarioModel>();
-
-    // protected override async Task OnInitializedAsync() {
-
-    //     usuarios = await UsuarioService.GetAllUsuarios();
-    // }
 }

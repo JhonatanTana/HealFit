@@ -5,16 +5,19 @@
 @inject IUsuarioService UsuarioService
 @inject NavigationManager Navigation
 
-<h3>Login</h3>
+<section class="content px-4">
 
-<EditForm Model="requestUsuarioDTO" OnSubmit="Logar">
+    <h3>Login</h3>
 
-    <input type="email" @bind="requestUsuarioDTO.Email" placeholder="Email" name="name" />
-    <input type="password" @bind="requestUsuarioDTO.Senha" placeholder="Senha" name="name" />
-    <button type="submit">Login</button>
+    <EditForm Model="requestUsuarioDTO" OnSubmit="Logar">
 
-</EditForm>
+        <input type="email" @bind="requestUsuarioDTO.Email" placeholder="Email" name="name" />
+        <input type="password" @bind="requestUsuarioDTO.Senha" placeholder="Senha" name="name" />
+        <button type="submit">Login</button>
 
+    </EditForm>
+
+</section>
 
 @code {
 

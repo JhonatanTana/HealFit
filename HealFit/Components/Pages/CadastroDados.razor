@@ -1,0 +1,54 @@
+﻿@page "/CadastroDados/{UsuarioId:int}"
+@using AutoMapper
+@using HealFit.DTO.Request
+@using HealFit.Model
+@using HealFit.Service
+@inject IDadosService DadosService
+@inject NavigationManager Navigation
+@inject IMapper Mapper
+
+<section class="content px-4">
+    <h3>CadastroDados</h3>
+
+    <EditForm Model="cadastraDadosDTO" OnSubmit="CadastrarDados">
+        <input type="text" name="Nome" placeholder="Nome" @bind="cadastraDadosDTO.Nome" />
+        <input type="text" name="Sobrenome" placeholder="Sobrenome" @bind="cadastraDadosDTO.Sobrenome" />
+        <input type="date" name="Data de Nascimento" @bind="cadastraDadosDTO.DataNascimento" />
+        <input type="number" name="Peso" placeholder="Peso" @bind="cadastraDadosDTO.Peso" />
+        <input type="number" name="Cep" placeholder="CEP" @bind="cadastraDadosDTO.Cep" />
+        <input type="text" name="Cidade" placeholder="Cidade" @bind="cadastraDadosDTO.Cidade" />
+        <input type="text" name="Estado" placeholder="Estado" @bind="cadastraDadosDTO.Estado" />
+        <input type="text" name="Bairro" placeholder="Bairro" @bind="cadastraDadosDTO.Bairro" />
+        <input type="text" name="Rua" placeholder="Rua" @bind="cadastraDadosDTO.Rua" />
+        <input type="text" name="Numero" placeholder="Numero" @bind="cadastraDadosDTO.Numero" />
+        <input type="text" name="Complemento" placeholder="Complemento" @bind="cadastraDadosDTO.Complemento" />
+
+        <button type="submit" class="btn btn-primary">Cadastrar</button>
+    </EditForm>
+
+</section>
+
+@code {
+    [Parameter]
+    public int UsuarioId { get; set; }
+
+    private CadastraDadosDTORequest cadastraDadosDTO = new CadastraDadosDTORequest();
+
+    private async Task CadastrarDados() {
+        var dadosInformados = Mapper.Map<DadosPessoaisModel>(cadastraDadosDTO);
+        dadosInformados.UsuarioId = UsuarioId;
+
+        var result = await DadosService.AddDados(dadosInformados);
+
+        if (result > 0) {
+            Navigation.NavigateTo("/Home");
+        }
+        else {
+            await DisplayAlert("Erro", "Erro ao cadastrar os dados", "Ok");
+        }
+    }
+
+    private async Task DisplayAlert(string title, string message, string cancel) {
+        await Application.Current.MainPage.DisplayAlert(title, message, cancel);
+    }
+}

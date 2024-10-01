@@ -22,8 +22,8 @@ public class UsuarioService : IUsuarioService {
     }
 
     public async Task<int> AddUsuario(UsuarioModel usuario) {
-
-        return await _dbConnection.InsertAsync(usuario);
+        await _dbConnection.InsertAsync(usuario);
+        return usuario.UsuarioId; // Retorna o ID do usuário recém-criado
     }
 
     public Task<int> DeleteUsuario(UsuarioModel usuario) {

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace HealFit.DTO.Request; 
-public class registroUsuarioDTODTORequest {
+public class RegistroUsuarioDTORequest {
 
     public string Email { get; set; }
     public string Senha { get; set; }
