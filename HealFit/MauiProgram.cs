@@ -13,6 +13,8 @@ public static class MauiProgram {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
             });
 
+        builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://viacep.com.br/ws/") });
+
         builder.Services.AddMauiBlazorWebView();
 
 #if DEBUG
@@ -23,6 +25,7 @@ public static class MauiProgram {
 
         builder.Services.AddSingleton<IUsuarioService, UsuarioService>();
         builder.Services.AddSingleton<IDadosService, DadosService>();
+        builder.Services.AddSingleton<CepService>(); // Adicione esta linha
 
         return builder.Build();
     }

@@ -6,6 +6,7 @@
 @inject IDadosService DadosService
 @inject NavigationManager Navigation
 @inject IMapper Mapper
+@inject CepService CepService
 
 <section class="content px-4">
     <h3 class="mb-3">Cadastro de Dados Pessoais</h3>
@@ -26,26 +27,26 @@
             <input type="text" name="Peso" placeholder="Peso" @bind="cadastraDadosDTO.Peso" class="w-100 p-2 rounded border border-1 border-secondary" />
         </div>
         <div class="mb-3">
-            <input type="text" name="Cep" placeholder="CEP" @bind="cadastraDadosDTO.Cep" class="w-100 p-2 rounded border border-1 border-secondary" />
+            <input type="text" name="Cep" placeholder="CEP" value="@cadastraDadosDTO.Cep" class="w-100 p-2 rounded border border-1 border-secondary" @onchange="BuscarCep" />
         </div>
         <div class="mb-3">
-            <input type="text" name="Cidade" placeholder="Cidade" @bind="cadastraDadosDTO.Cidade" class="w-100 p-2 rounded border border-1 border-secondary" />
+            <input type="text" name="Cidade" placeholder="Cidade" @bind="cadastraDadosDTO.Cidade" class="w-100 p-2 rounded border border-1 border-secondary" readonly="@CepEncontrado" />
         </div>
         <div class="mb-3">
-            <input type="text" name="Estado" placeholder="Estado" @bind="cadastraDadosDTO.Estado" class="w-100 p-2 rounded border border-1 border-secondary" />
+            <input type="text" name="Estado" placeholder="Estado" @bind="cadastraDadosDTO.Estado" class="w-100 p-2 rounded border border-1 border-secondary" readonly="@CepEncontrado" />
         </div>
         <div class="mb-3">
-            <input type="text" name="Bairro" placeholder="Bairro" @bind="cadastraDadosDTO.Bairro" class="w-100 p-2 rounded border border-1 border-secondary" />
+            <input type="text" name="Bairro" placeholder="Bairro" @bind="cadastraDadosDTO.Bairro" class="w-100 p-2 rounded border border-1 border-secondary" readonly="@CepEncontrado" />
         </div>
         <div class="mb-3">
-             <input type="text" name="Rua" placeholder="Rua" @bind="cadastraDadosDTO.Rua" class="w-100 p-2 rounded border border-1 border-secondary" />
+            <input type="text" name="Rua" placeholder="Rua" @bind="cadastraDadosDTO.Rua" class="w-100 p-2 rounded border border-1 border-secondary" readonly="@CepEncontrado" />
         </div>
         <div class="mb-3">
             <input type="text" name="Numero" placeholder="Numero" @bind="cadastraDadosDTO.Numero" class="w-100 p-2 rounded border border-1 border-secondary" />
         </div>
         <div class="mb-3">
             <input type="text" name="Complemento" placeholder="Complemento" @bind="cadastraDadosDTO.Complemento" class="w-100 p-2 rounded border border-1 border-secondary" />
-        </div
+        </div>
 
         <button type="submit" class="btn btn-primary w-100">Cadastrar</button>
     </EditForm>
@@ -57,6 +58,8 @@
     public int UsuarioId { get; set; }
 
     private CadastraDadosDTORequest cadastraDadosDTO = new CadastraDadosDTORequest();
+    private bool CepEncontrado = false;
+
 
     private async Task CadastrarDados() {
         var dadosInformados = Mapper.Map<DadosPessoaisModel>(cadastraDadosDTO);
@@ -69,6 +72,26 @@
         }
         else {
             await DisplayAlert("Erro", "Erro ao cadastrar os dados", "Ok");
+        }
+    }
+
+    private async Task BuscarCep(ChangeEventArgs e) {
+        var cep = e.Value.ToString();
+        cadastraDadosDTO.Cep = cep; // Atualiza o valor de 'Cep' manualmente
+
+        var cepInfo = await CepService.GetCepInfo(cep);
+
+        if (cepInfo != null) {
+            cadastraDadosDTO.Rua = cepInfo.Logradouro;
+            cadastraDadosDTO.Bairro = cepInfo.Bairro;
+            cadastraDadosDTO.Cidade = cepInfo.Localidade;
+            cadastraDadosDTO.Estado = cepInfo.Uf;
+
+            CepEncontrado = true;
+        }
+        else {
+            await DisplayAlert("Erro", "CEP não encontrado", "Ok");
+            CepEncontrado = false;
         }
     }
 

@@ -72,10 +72,6 @@
         <PackageReference Include="SQLitePCLRaw.provider.dynamic_cdecl" Version="2.1.10" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="DTO\Response\" />
-    </ItemGroup>
-
     <ProjectExtensions><VisualStudio><UserProperties XamarinHotReloadDebuggerTimeoutExceptionHealFitHideInfoBar="True" /></VisualStudio></ProjectExtensions>
 
 </Project>
