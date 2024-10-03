@@ -31,7 +31,8 @@
                 <p class="card-text">Rua: @cadastraDadosDTO.Rua</p>
                 <p class="card-text">Numero: @cadastraDadosDTO.Numero</p>
                 <p class="card-text">Complemento: @cadastraDadosDTO.Complemento</p>
-                <button class="btn btn-primary w-100" @onclick="() => editar(cadastraDadosDTO.UsuarioId)">Editar</button>
+                <button class="btn btn-primary mb-2 w-100" @onclick="() => editar(cadastraDadosDTO.UsuarioId)">Editar</button>
+                <button class="btn btn-primary w-100" @onclick="() => alterarSenha(cadastraDadosDTO.UsuarioId)">Alterar Senha</button>
             </div>
         </div>
     </div>
@@ -103,6 +104,10 @@
 
     private void editar(int usuarioId) {
         Navigation.NavigateTo($"/CadastroDados/{usuarioId}/true");
+    }
+
+    private void alterarSenha(int usuarioId) {
+        Navigation.NavigateTo($"/Registrar/{usuarioId}");
     }
 
     private async Task DisplayAlert(string title, string message, string cancel) {

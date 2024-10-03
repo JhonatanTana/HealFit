@@ -1,13 +1,17 @@
 ﻿@page "/Registrar"
+@page "/Registrar/{UsuarioId:int}"
+@using AutoMapper
 @using HealFit.DTO.Request
 @using HealFit.Model
 @using HealFit.Service
 @inject IUsuarioService UsuarioService
 @inject NavigationManager Navigation
+@inject IJSRuntime JS
+@inject IMapper Mapper
 
 <section class="content px-4">
 
-    <h3 class="mb-3">Registre-se</h3>
+    <h3 class="mb-3">@((UsuarioId > 0) ? "Atualizar Usuário" : "Registrar-se")</h3>
 
     <EditForm Model="registroUsuarioDTO" OnSubmit="RegistrarUsuario" class="flex flex-column flex-nowrap w-100">
 
@@ -18,7 +22,7 @@
             <input type="password" @bind="registroUsuarioDTO.Senha" name="senha" placeholder="Senha" class="w-100 p-2 rounded border border-1 border-secondary" />
         </div>
         <div class="mb-3">
-            <input type="password" @bind="registroUsuarioDTO.ConfSenha" name="confSenha" placeholder="Confirmação de Senha" class="w-100 p-2 rounded border border-1 border-secondary"  />
+            <input type="password" @bind="registroUsuarioDTO.ConfSenha" name="confSenha" placeholder="Confirmação de Senha" class="w-100 p-2 rounded border border-1 border-secondary" />
         </div>
 
         <button class="btn btn-primary">Registrar</button>
@@ -26,10 +30,20 @@
 </section>
 
 @code {
+    [Parameter]
+    public int UsuarioId { get; set; }
 
     private RegistroUsuarioDTORequest registroUsuarioDTO = new RegistroUsuarioDTORequest();
-
     private List<UsuarioModel> usuarios;
+
+    protected override async Task OnInitializedAsync() {
+        if (UsuarioId > 0) {
+            // Atualiza dados de um usuário existente
+            var usuario = await UsuarioService.GetUsuarioById(UsuarioId);
+            registroUsuarioDTO.Email = usuario.Email;
+        }
+    }
+
 
     private async Task RegistrarUsuario() {
 
@@ -38,24 +52,42 @@
             return;
         }
 
-        usuarios = await UsuarioService.GetAllUsuarios();
+        if (UsuarioId > 0) {
 
-        if (usuarios.Any(u => u.Email == registroUsuarioDTO.Senha)) // Verifica se o usuário já existe
-        {
-            await DisplayAlert("Erro", "Usuário já existente", "Ok");
-        }
-        else {
-
-            var usuarioModelo = new UsuarioModel { Email = registroUsuarioDTO.Email, Senha = registroUsuarioDTO.Senha };
-            var response = await UsuarioService.AddUsuario(usuarioModelo);
+            var usuarioModelo = new UsuarioModel { Email = registroUsuarioDTO.Email, Senha = registroUsuarioDTO.Senha, UsuarioId = UsuarioId };
+            var response = await UsuarioService.UpdateUsuario(usuarioModelo);
 
 
             if (response > 0) // Verifica se o usuário foi cadastrado com sucesso
             {
-                Navigation.NavigateTo($"/CadastroDados/{response}");
+                Navigation.NavigateTo("/Perfil");
             }
             else {
-                await DisplayAlert("Erro", "Erro ao cadastrar", "Ok");
+                await DisplayAlert("Erro", "Erro ao alterar a senha", "Ok");
+            }
+
+        }
+        else {
+
+            usuarios = await UsuarioService.GetAllUsuarios();
+
+            if (usuarios.Any(u => u.Email == registroUsuarioDTO.Senha)) // Verifica se o usuário já existe
+            {
+                await DisplayAlert("Erro", "Usuário já existente", "Ok");
+            }
+            else {
+
+                var usuarioModelo = new UsuarioModel { Email = registroUsuarioDTO.Email, Senha = registroUsuarioDTO.Senha };
+                var response = await UsuarioService.AddUsuario(usuarioModelo);
+
+
+                if (response > 0) // Verifica se o usuário foi cadastrado com sucesso
+                {
+                    Navigation.NavigateTo($"/CadastroDados/{response}");
+                }
+                else {
+                    await DisplayAlert("Erro", "Erro ao cadastrar", "Ok");
+                }
             }
         }
 

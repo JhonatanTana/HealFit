@@ -1,4 +1,5 @@
 ﻿using HealFit.Model;
+using Microsoft.Maui.Controls.PlatformConfiguration;
 using SQLite;
 
 namespace HealFit.Service;
@@ -38,10 +39,10 @@ public class UsuarioService : IUsuarioService {
     public async Task<UsuarioModel> GetUsuarioById(int usuarioId) {
 
         return await _dbConnection.Table<UsuarioModel>().FirstOrDefaultAsync(c => c.UsuarioId == usuarioId);
-
     }
 
-    public Task<int> UpdateUsuario(UsuarioModel usuario) {
-        throw new NotImplementedException();
+    public async Task<int> UpdateUsuario(UsuarioModel usuario) {
+
+        return await _dbConnection.UpdateAsync(usuario);
     }
 }
