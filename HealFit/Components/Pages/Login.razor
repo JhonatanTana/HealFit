@@ -51,11 +51,13 @@
         var usuario = usuarios.FirstOrDefault(u => u.Email == requestUsuarioDTO.Email && u.Senha == requestUsuarioDTO.Senha);
 
         if (usuario != null) {
+
             if (lembrarUsuario) {
                 // Salva o email e a senha no local storage
                 await JS.InvokeVoidAsync("localStorage.setItem", "email", requestUsuarioDTO.Email);
                 await JS.InvokeVoidAsync("localStorage.setItem", "senha", requestUsuarioDTO.Senha);
-            } else {
+            }
+            else {
                 // Remove o email e a senha do local storage
                 await JS.InvokeVoidAsync("localStorage.removeItem", "email");
                 await JS.InvokeVoidAsync("localStorage.removeItem", "senha");
@@ -63,16 +65,20 @@
 
             var dadosPessoais = await DadosService.GetDadosById(usuario.UsuarioId);
 
+            // Salva o ID do usuário no local storage independentemente de 'lembrarUsuario'
+            await JS.InvokeVoidAsync("localStorage.setItem", "usuarioId", usuario.UsuarioId.ToString());
+
             if (dadosPessoais == null) {
                 Navigation.NavigateTo($"/CadastroDados/{usuario.UsuarioId}");
-            } else {
+            }
+            else {
                 Navigation.NavigateTo("/Home");
             }
-        } else {
+        }
+        else {
             await DisplayAlert("Erro", "Usuario ou Senha inválido", "Ok");
         }
     }
-
 
     private async Task DisplayAlert(string title, string message, string cancel) {
 

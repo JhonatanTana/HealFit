@@ -1,4 +1,5 @@
 ﻿@page "/CadastroDados/{UsuarioId:int}"
+@page "/CadastroDados/{UsuarioId:int}/{Edit:bool}"
 @using AutoMapper
 @using HealFit.DTO.Request
 @using HealFit.Model
@@ -24,10 +25,13 @@
             <input type="date" name="Data de Nascimento" @bind="cadastraDadosDTO.DataNascimento" class="w-100 p-2 rounded border border-1 border-secondary" />
         </div>
         <div class="mb-3">
-            <input type="text" name="Peso" placeholder="Peso" @bind="cadastraDadosDTO.Peso" class="w-100 p-2 rounded border border-1 border-secondary" />
+            <input type="number" name="Altura" placeholder="Altura (em Metros)" @bind="cadastraDadosDTO.Altura" step="0.01" class="w-100 p-2 rounded border border-1 border-secondary" />
         </div>
         <div class="mb-3">
-            <input type="text" name="Cep" placeholder="CEP" value="@cadastraDadosDTO.Cep" class="w-100 p-2 rounded border border-1 border-secondary" @onchange="BuscarCep" />
+            <input type="number" name="Peso" placeholder="Peso (em Kg)" @bind="cadastraDadosDTO.Peso" step="0.01" class="w-100 p-2 rounded border border-1 border-secondary" />
+        </div>
+        <div class="mb-3">
+            <input type="number" name="Cep" placeholder="CEP" value="@cadastraDadosDTO.Cep" class="w-100 p-2 rounded border border-1 border-secondary" @onchange="BuscarCep" />
         </div>
         <div class="mb-3">
             <input type="text" name="Cidade" placeholder="Cidade" @bind="cadastraDadosDTO.Cidade" class="w-100 p-2 rounded border border-1 border-secondary" readonly="@CepEncontrado" />
@@ -56,22 +60,51 @@
 @code {
     [Parameter]
     public int UsuarioId { get; set; }
+    [Parameter]
+    public bool Edit { get; set; }
 
     private CadastraDadosDTORequest cadastraDadosDTO = new CadastraDadosDTORequest();
     private bool CepEncontrado = false;
 
+    protected override async Task OnInitializedAsync() {
+
+        if (Edit) {
+            var dadosPessoais = await DadosService.GetDadosById(UsuarioId);
+            if (dadosPessoais != null) {
+                cadastraDadosDTO = Mapper.Map<CadastraDadosDTORequest>(dadosPessoais);
+            }
+        }
+    }
+
 
     private async Task CadastrarDados() {
-        var dadosInformados = Mapper.Map<DadosPessoaisModel>(cadastraDadosDTO);
-        dadosInformados.UsuarioId = UsuarioId;
 
-        var result = await DadosService.AddDados(dadosInformados);
+        if(Edit) {
+            var dadosInformados = Mapper.Map<DadosPessoaisModel>(cadastraDadosDTO);
+            dadosInformados.UsuarioId = UsuarioId;
 
-        if (result > 0) {
-            Navigation.NavigateTo("/Home");
+            var result = await DadosService.UpdateDados(dadosInformados);
+
+            if (result > 0) {
+                Navigation.NavigateTo("/Perfil");
+            }
+            else {
+                await DisplayAlert("Erro", "Erro ao cadastrar os dados", "Ok");
+            }
+
         }
         else {
-            await DisplayAlert("Erro", "Erro ao cadastrar os dados", "Ok");
+            var dadosInformados = Mapper.Map<DadosPessoaisModel>(cadastraDadosDTO);
+            dadosInformados.UsuarioId = UsuarioId;
+
+            var result = await DadosService.AddDados(dadosInformados);
+
+            if (result > 0) {
+                Navigation.NavigateTo("/Home");
+            }
+            else {
+                await DisplayAlert("Erro", "Erro ao cadastrar os dados", "Ok");
+            }
         }
     }
 

@@ -45,8 +45,8 @@ public class DadosService : IDadosService {
 
     }
 
-    public Task<int> UpdateDados(DadosPessoaisModel dados) {
-        throw new NotImplementedException();
+    public async Task<int> UpdateDados(DadosPessoaisModel dados) {
+        return await _dbConnection.UpdateAsync(dados);
     }
 
 }

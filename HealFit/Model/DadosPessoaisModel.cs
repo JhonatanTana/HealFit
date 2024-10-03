@@ -20,6 +20,7 @@ public class DadosPessoaisModel {
     [Required(ErrorMessage = "O campo Data de Nascimento é obrigatório.")]
     public DateTime DataNascimento { get; set; }
 
+    public double Altura { get; set; }
     public double Peso { get; set; }
     public int Cep { get; set; }
     public string Cidade { get; set; }

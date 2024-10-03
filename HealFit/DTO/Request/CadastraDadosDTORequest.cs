@@ -13,7 +13,8 @@ public class CadastraDadosDTORequest {
     public string Nome { get; set; }
     public string Sobrenome { get; set; }
     public DateTime DataNascimento { get; set; } = DateTime.Now;
-    public string Peso { get; set; }
+    public decimal Altura { get; set; }
+    public decimal Peso { get; set; }
     public string Cep { get; set; }
     public string Cidade { get; set; }
     public string Estado { get; set; }
