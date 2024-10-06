@@ -1,48 +1,197 @@
 ﻿using HealFit.Model;
 using Microsoft.Maui.Controls.PlatformConfiguration;
-using SQLite;
+using Newtonsoft.Json;
+using System.Text;
 
 namespace HealFit.Service;
 public class UsuarioService : IUsuarioService {
 
-    private SQLiteAsyncConnection _dbConnection;
+    private string? base_url;
+    private Page _page;
 
-    public UsuarioService() {
+    public async Task<int?> VerificaUsuario(Usuario usuario) {
 
-        SetUpDb();
-    }
-    private async void SetUpDb() {
+        int? usuarioId = null;
 
-        if (_dbConnection == null) {
+        base_url = await SecureStorage.GetAsync("servidor");
 
-            string dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "HealFit.db3");
-
-            _dbConnection = new SQLiteAsyncConnection(dbPath);
-            await _dbConnection.CreateTableAsync<UsuarioModel>();
+        if (string.IsNullOrEmpty(base_url)) {
+            throw new Exception("Base URL não encontrada no SecureStorage.");
         }
+
+        using (var client = new HttpClient()) {
+            var url = $"{base_url}/usuario/login";
+
+            var serializeContent = JsonConvert.SerializeObject(usuario);
+            var apiResponse = await client.PostAsync(url, new StringContent(serializeContent, Encoding.UTF8, "application/json"));
+
+            if (apiResponse.StatusCode == System.Net.HttpStatusCode.OK) {
+                var response = await apiResponse.Content.ReadAsStringAsync();
+                var deserializeResponse = JsonConvert.DeserializeObject<Usuario>(response);
+
+                if (deserializeResponse != null) {
+
+                    usuarioId = deserializeResponse.UsuarioId;
+                }
+            }
+        }
+
+        return usuarioId;
     }
 
-    public async Task<int> AddUsuario(UsuarioModel usuario) {
-        await _dbConnection.InsertAsync(usuario);
-        return usuario.UsuarioId; // Retorna o ID do usuário recém-criado
+    public async Task<Usuario> GetUsuarioById (int id) {
+
+        var returnResponse = new Usuario();
+
+        try {
+
+            base_url = await SecureStorage.GetAsync("servidor");
+
+            if (string.IsNullOrEmpty(base_url)) {
+                throw new Exception("Base URL não encontrada no SecureStorage.");
+            }
+
+            using (var client = new HttpClient()) {
+                var url = $"{base_url}/Usuario/{id}";
+                var apiResponse = await client.GetAsync(url);
+
+                if (apiResponse.StatusCode == System.Net.HttpStatusCode.OK) {
+                    var response = await apiResponse.Content.ReadAsStringAsync();
+                    returnResponse = JsonConvert.DeserializeObject<Usuario>(response) ?? new Usuario();
+                }
+            }
+        }
+        catch (Exception ex) {
+            string msg = ex.Message;
+        }
+
+        return returnResponse;
     }
 
-    public Task<int> DeleteUsuarioById(int registroId) {
-        throw new NotImplementedException();
+    public async Task<bool> UpdateUsuario(Usuario usuario) {
+
+        var returnResponse = false;
+
+        try {
+            base_url = await SecureStorage.GetAsync("servidor");
+
+            if (string.IsNullOrEmpty(base_url)) {
+
+                throw new Exception("Base URL não encontrada no SecureStorage.");
+            }
+
+            using (var client = new HttpClient()) {
+
+                var url = $"{base_url}/Usuario/RedefinirSenha"; // A URL inclui o ID do usuário
+
+                var serializeContent = JsonConvert.SerializeObject(usuario);
+                var content = new StringContent(serializeContent, Encoding.UTF8, "application/json");
+
+                var apiResponse = await client.PutAsync(url, content); // Faz a chamada PUT
+
+                if (apiResponse.StatusCode == System.Net.HttpStatusCode.OK) {
+
+                    returnResponse = true; // Retorna true se a atualização foi bem-sucedida
+                }
+            }
+        }
+        catch (Exception ex) {
+            string msg = ex.Message;
+        }
+
+        return returnResponse;
     }
 
-    public async Task<List<UsuarioModel>> GetAllUsuarios() {
+    public async Task<Usuario> AddUsuario(Usuario usuario) {
 
-        return await _dbConnection.Table<UsuarioModel>().ToListAsync();
+        var returnResponse = new Usuario();
+
+        try {
+            base_url = await SecureStorage.GetAsync("servidor");
+
+            if (string.IsNullOrEmpty(base_url)) {
+                throw new Exception("Base URL não encontrada no SecureStorage.");
+            }
+
+            using (var client = new HttpClient()) {
+
+                var url = $"{base_url}/Usuario/Registro";
+
+                var serializeContent = JsonConvert.SerializeObject(usuario);
+                var content = new StringContent(serializeContent, Encoding.UTF8, "application/json");
+
+                var apiResponse = await client.PostAsync(url, content);
+
+                if (apiResponse.StatusCode == System.Net.HttpStatusCode.OK) {
+
+                    var responseString = await apiResponse.Content.ReadAsStringAsync();
+                    returnResponse = JsonConvert.DeserializeObject<Usuario>(responseString) ?? new Usuario();
+                }
+            }
+        }
+        catch (Exception ex) {
+            string msg = ex.Message;
+        }
+
+        return returnResponse;
     }
 
-    public async Task<UsuarioModel> GetUsuarioById(int usuarioId) {
+    public async Task<bool> DeleteUsuario(int id) {
+        var returnResponse = false;
 
-        return await _dbConnection.Table<UsuarioModel>().FirstOrDefaultAsync(c => c.UsuarioId == usuarioId);
+        try {
+            base_url = await SecureStorage.GetAsync("servidor");
+
+            if (string.IsNullOrEmpty(base_url)) {
+                throw new Exception("Base URL não encontrada no SecureStorage.");
+            }
+
+            using (var client = new HttpClient()) {
+                var url = $"{base_url}/Usuario/{id}";
+
+                var apiResponse = await client.DeleteAsync(url);
+
+                if (apiResponse.StatusCode == System.Net.HttpStatusCode.NoContent) {
+                    returnResponse = true; // Success if the user was deleted
+                }
+            }
+        }
+        catch (Exception ex) {
+            string msg = ex.Message;
+        }
+
+        return returnResponse;
     }
 
-    public async Task<int> UpdateUsuario(UsuarioModel usuario) {
+    public async Task<List<Usuario>> GetAllUsuarios() {
 
-        return await _dbConnection.UpdateAsync(usuario);
+        var returnResponse = new List<Usuario>();
+
+        try {
+            
+            base_url = await SecureStorage.GetAsync("servidor");
+
+            if (string.IsNullOrEmpty(base_url)) {
+                throw new Exception("Base URL não encontrada no SecureStorage.");
+            }
+
+            using (var client = new HttpClient()) {
+                
+                var url = $"{base_url}/Usuario";
+                var apiResponse = await client.GetAsync(url);
+
+                if (apiResponse.StatusCode == System.Net.HttpStatusCode.OK) {
+                    
+                    var response = await apiResponse.Content.ReadAsStringAsync();
+                    returnResponse = JsonConvert.DeserializeObject<List<Usuario>>(response) ?? new List<Usuario>();
+                }
+            }
+        }
+        catch (Exception ex) {
+
+            string msg = ex.Message;
+        }
+
+        return returnResponse;
     }
 }

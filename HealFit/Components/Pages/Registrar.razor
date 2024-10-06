@@ -1,13 +1,11 @@
 ﻿@page "/Registrar"
 @page "/Registrar/{UsuarioId:int}"
 @using AutoMapper
-@using HealFit.DTO.Request
 @using HealFit.Model
 @using HealFit.Service
 @inject IUsuarioService UsuarioService
 @inject NavigationManager Navigation
 @inject IJSRuntime JS
-@inject IMapper Mapper
 
 <section class="content px-4">
 
@@ -22,7 +20,7 @@
             <input type="password" @bind="registroUsuarioDTO.Senha" name="senha" placeholder="Senha" class="w-100 p-2 rounded border border-1 border-secondary" />
         </div>
         <div class="mb-3">
-            <input type="password" @bind="registroUsuarioDTO.ConfSenha" name="confSenha" placeholder="Confirmação de Senha" class="w-100 p-2 rounded border border-1 border-secondary" />
+            <input type="password" @bind="ConfSenha" name="confSenha" placeholder="Confirmação de Senha" class="w-100 p-2 rounded border border-1 border-secondary" />
         </div>
 
         <button class="btn btn-primary">Registrar</button>
@@ -32,12 +30,15 @@
 @code {
     [Parameter]
     public int UsuarioId { get; set; }
+    public string ConfSenha { get; set; }
 
-    private RegistroUsuarioDTORequest registroUsuarioDTO = new RegistroUsuarioDTORequest();
-    private List<UsuarioModel> usuarios;
+    private Usuario registroUsuarioDTO = new Usuario();
+    private List<Usuario> usuarios;
 
     protected override async Task OnInitializedAsync() {
+
         if (UsuarioId > 0) {
+
             // Atualiza dados de um usuário existente
             var usuario = await UsuarioService.GetUsuarioById(UsuarioId);
             registroUsuarioDTO.Email = usuario.Email;
@@ -47,18 +48,22 @@
 
     private async Task RegistrarUsuario() {
 
-        if (registroUsuarioDTO.Senha != registroUsuarioDTO.ConfSenha) {
+        if (registroUsuarioDTO.Senha != ConfSenha) {
+
             await DisplayAlert("Erro", "As senhas não coincidem", "Ok");
             return;
         }
 
         if (UsuarioId > 0) {
 
-            var usuarioModelo = new UsuarioModel { Email = registroUsuarioDTO.Email, Senha = registroUsuarioDTO.Senha, UsuarioId = UsuarioId };
+            var usuarioModelo = new Usuario { 
+                Email = registroUsuarioDTO.Email, 
+                Senha = registroUsuarioDTO.Senha, 
+                UsuarioId = UsuarioId 
+            };
             var response = await UsuarioService.UpdateUsuario(usuarioModelo);
 
-
-            if (response > 0) // Verifica se o usuário foi cadastrado com sucesso
+            if (response) // Verifica se o usuário foi cadastrado com sucesso
             {
                 Navigation.NavigateTo("/Perfil");
             }
@@ -69,28 +74,18 @@
         }
         else {
 
-            usuarios = await UsuarioService.GetAllUsuarios();
+            var usuarioModelo = new Usuario { Email = registroUsuarioDTO.Email, Senha = registroUsuarioDTO.Senha };
+            var response = await UsuarioService.AddUsuario(usuarioModelo);
 
-            if (usuarios.Any(u => u.Email == registroUsuarioDTO.Senha)) // Verifica se o usuário já existe
+            if (response.UsuarioId > 0) // Verifica se o usuário foi cadastrado com sucesso
             {
-                await DisplayAlert("Erro", "Usuário já existente", "Ok");
+                Navigation.NavigateTo($"/CadastroDados/{UsuarioId}");
             }
             else {
-
-                var usuarioModelo = new UsuarioModel { Email = registroUsuarioDTO.Email, Senha = registroUsuarioDTO.Senha };
-                var response = await UsuarioService.AddUsuario(usuarioModelo);
-
-
-                if (response > 0) // Verifica se o usuário foi cadastrado com sucesso
-                {
-                    Navigation.NavigateTo($"/CadastroDados/{response}");
-                }
-                else {
-                    await DisplayAlert("Erro", "Erro ao cadastrar", "Ok");
-                }
+                await DisplayAlert("Erro", "Erro ao cadastrar", "Ok");
             }
-        }
 
+        }
     }
 
     private async Task DisplayAlert(string title, string message, string cancel) {

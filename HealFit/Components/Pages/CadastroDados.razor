@@ -1,12 +1,10 @@
 ﻿@page "/CadastroDados/{UsuarioId:int}"
 @page "/CadastroDados/{UsuarioId:int}/{Edit:bool}"
 @using AutoMapper
-@using HealFit.DTO.Request
 @using HealFit.Model
 @using HealFit.Service
 @inject IDadosService DadosService
 @inject NavigationManager Navigation
-@inject IMapper Mapper
 @inject CepService CepService
 
 <section class="content px-4">
@@ -63,15 +61,17 @@
     [Parameter]
     public bool Edit { get; set; }
 
-    private CadastraDadosDTORequest cadastraDadosDTO = new CadastraDadosDTORequest();
+    private DadosPessoais cadastraDadosDTO = new DadosPessoais();
     private bool CepEncontrado = false;
 
     protected override async Task OnInitializedAsync() {
 
         if (Edit) {
             var dadosPessoais = await DadosService.GetDadosById(UsuarioId);
+
             if (dadosPessoais != null) {
-                cadastraDadosDTO = Mapper.Map<CadastraDadosDTORequest>(dadosPessoais);
+
+                cadastraDadosDTO = dadosPessoais;
             }
         }
     }
@@ -80,12 +80,14 @@
     private async Task CadastrarDados() {
 
         if(Edit) {
-            var dadosInformados = Mapper.Map<DadosPessoaisModel>(cadastraDadosDTO);
+
+            var dadosInformados = cadastraDadosDTO;
+
             dadosInformados.UsuarioId = UsuarioId;
 
             var result = await DadosService.UpdateDados(dadosInformados);
 
-            if (result > 0) {
+            if (result) {
                 Navigation.NavigateTo("/Perfil");
             }
             else {
@@ -94,12 +96,14 @@
 
         }
         else {
-            var dadosInformados = Mapper.Map<DadosPessoaisModel>(cadastraDadosDTO);
+
+            var dadosInformados = cadastraDadosDTO;
+
             dadosInformados.UsuarioId = UsuarioId;
 
             var result = await DadosService.AddDados(dadosInformados);
 
-            if (result > 0) {
+            if (result) {
                 Navigation.NavigateTo("/Home");
             }
             else {
@@ -109,6 +113,7 @@
     }
 
     private async Task BuscarCep(ChangeEventArgs e) {
+
         var cep = e.Value.ToString();
         cadastraDadosDTO.Cep = cep; // Atualiza o valor de 'Cep' manualmente
 
@@ -129,6 +134,7 @@
     }
 
     private async Task DisplayAlert(string title, string message, string cancel) {
+
         await Application.Current.MainPage.DisplayAlert(title, message, cancel);
     }
 }

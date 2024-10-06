@@ -1,5 +1,4 @@
 ﻿@page "/Login"
-@using HealFit.DTO.Request
 @using HealFit.Model
 @using HealFit.Service
 @inject IUsuarioService UsuarioService
@@ -29,8 +28,8 @@
 
 @code {
 
-    private RequestUsuarioDTO requestUsuarioDTO = new RequestUsuarioDTO();
-    private List<UsuarioModel> usuarios;
+    private Usuario requestUsuarioDTO = new Usuario();
+    private List<Usuario> usuarios;
     private bool lembrarUsuario = false;
 
     protected override async Task OnInitializedAsync() {
@@ -47,10 +46,16 @@
 
 
     private async Task Logar() {
-        var usuarios = await UsuarioService.GetAllUsuarios();
-        var usuario = usuarios.FirstOrDefault(u => u.Email == requestUsuarioDTO.Email && u.Senha == requestUsuarioDTO.Senha);
 
-        if (usuario != null) {
+        var login = new Usuario {
+                Email = requestUsuarioDTO.Email,
+                Senha = requestUsuarioDTO.Senha
+            };
+
+        // A API retorna o usuarioId após o login
+        var usuarioId = await UsuarioService.VerificaUsuario(login);
+
+        if (usuarioId != null) {
 
             if (lembrarUsuario) {
                 // Salva o email e a senha no local storage
@@ -63,13 +68,13 @@
                 await JS.InvokeVoidAsync("localStorage.removeItem", "senha");
             }
 
-            var dadosPessoais = await DadosService.GetDadosById(usuario.UsuarioId);
-
             // Salva o ID do usuário no local storage independentemente de 'lembrarUsuario'
-            await JS.InvokeVoidAsync("localStorage.setItem", "usuarioId", usuario.UsuarioId.ToString());
+            await JS.InvokeVoidAsync("localStorage.setItem", "usuarioId", usuarioId.Value.ToString());
 
-            if (dadosPessoais == null) {
-                Navigation.NavigateTo($"/CadastroDados/{usuario.UsuarioId}");
+            var dadosPessoais = await DadosService.GetDadosByUserId(usuarioId.Value);
+
+            if (!dadosPessoais) {
+                Navigation.NavigateTo($"/CadastroDados/{usuarioId.Value}");
             }
             else {
                 Navigation.NavigateTo("/Home");

@@ -1,6 +1,4 @@
-﻿using HealFit.DTO.Mapping;
-using HealFit.Service;
-using Microsoft.Extensions.DependencyInjection;
+﻿using HealFit.Service;
 using Microsoft.Extensions.Logging;
 
 namespace HealFit; 
@@ -13,7 +11,19 @@ public static class MauiProgram {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
             });
 
+
+        builder.Services.AddSingleton<IUsuarioService, UsuarioService>();
+        builder.Services.AddSingleton<IDadosService, DadosService>();
+        builder.Services.AddSingleton<CepService>();
+        builder.Services.AddSingleton<BaseUrlProvider>();
+
+        builder.Services.AddScoped(sp => {
+            var baseUrlProvider = sp.GetRequiredService<BaseUrlProvider>();
+            return new HttpClient { BaseAddress = new Uri(baseUrlProvider.BaseUrl) };
+        });
+
         builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://viacep.com.br/ws/") });
+        builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://192.168.1.11") });
 
         builder.Services.AddMauiBlazorWebView();
 
@@ -21,11 +31,6 @@ public static class MauiProgram {
         builder.Services.AddBlazorWebViewDeveloperTools();
         builder.Logging.AddDebug();
 #endif
-        builder.Services.AddAutoMapper(typeof(MappingProfile)); // Use a classe que contém seu perfil de mapeamento
-
-        builder.Services.AddSingleton<IUsuarioService, UsuarioService>();
-        builder.Services.AddSingleton<IDadosService, DadosService>();
-        builder.Services.AddSingleton<CepService>(); // Adicione esta linha
 
         return builder.Build();
     }

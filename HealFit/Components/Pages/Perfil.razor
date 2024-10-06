@@ -1,11 +1,10 @@
 ﻿@page "/Perfil"
 @using AutoMapper
 @using HealFit.Components.Layout
-@using HealFit.DTO.Request
+@using HealFit.Model
 @using HealFit.Service
 @inject IDadosService DadosService
 @inject NavigationManager Navigation
-@inject IMapper Mapper
 @inject IJSRuntime JS
 
 <NavMenu></NavMenu>
@@ -40,7 +39,7 @@
 
 @code {
 
-    private CadastraDadosDTORequest cadastraDadosDTO = new CadastraDadosDTORequest();
+    private DadosPessoais cadastraDadosDTO = new DadosPessoais();
 
     protected override async Task OnInitializedAsync() {
         // Recupera o ID do usuário do local storage
@@ -48,8 +47,9 @@
 
         // Verifica se o ID foi recuperado e tenta convertê-lo para um inteiro
         if (int.TryParse(usuarioIdStr, out var usuarioId)) {
-            var dados = await DadosService.GetDadosById(usuarioId);
-            cadastraDadosDTO = Mapper.Map<CadastraDadosDTORequest>(dados);
+            
+            cadastraDadosDTO = await DadosService.GetDadosById(usuarioId);
+
         }
         else {
             // Se o ID não foi encontrado ou é inválido, redireciona ou exibe uma mensagem de erro

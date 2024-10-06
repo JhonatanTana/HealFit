@@ -7,9 +7,10 @@ using System.Threading.Tasks;
 
 namespace HealFit.Service; 
 public interface IDadosService {
-    Task<List<DadosPessoaisModel>> GetAllDados();
-    Task<DadosPessoaisModel> GetDadosById(int registroId);
-    Task<int> AddDados(DadosPessoaisModel dados);
-    Task<int> UpdateDados(DadosPessoaisModel dados);
-    Task<int> DeleteDadosById(int dadoId);
+
+    Task<DadosPessoais> GetDadosById(int id);
+    Task<bool> GetDadosByUserId(int id);
+    Task<bool> AddDados(DadosPessoais dados);
+    Task<bool> UpdateDados(DadosPessoais dados);
+    Task<bool> DeleteDados(int id);
 }
