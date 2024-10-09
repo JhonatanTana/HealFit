@@ -1,7 +1,8 @@
 ﻿using HealFit.Service;
 using Microsoft.Extensions.Logging;
+using System.Net.Http;
 
-namespace HealFit; 
+namespace HealFit;
 public static class MauiProgram {
     public static MauiApp CreateMauiApp() {
         var builder = MauiApp.CreateBuilder();
@@ -24,6 +25,8 @@ public static class MauiProgram {
 
         builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://viacep.com.br/ws/") });
         builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://192.168.1.11") });
+        builder.Services.AddHttpClient<FatSecretService>();
+
 
         builder.Services.AddMauiBlazorWebView();
 
