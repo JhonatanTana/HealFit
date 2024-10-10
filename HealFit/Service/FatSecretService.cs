@@ -1,10 +1,11 @@
-﻿using HealFit.Model;
-using Newtonsoft.Json;
-using System.Net.Http.Headers;
+﻿using System;
+using System.Net.Http;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace HealFit.Service; 
 public class FatSecretService {
     private readonly HttpClient _httpClient;
     private readonly string _consumerKey = ""; // Substitua pelo seu Consumer Key
@@ -14,46 +15,56 @@ public class FatSecretService {
         _httpClient = httpClient;
     }
 
+    // Função para pesquisar alimentos
     public async Task<string> SearchFoodsAsync(string searchExpression) {
-        string signatureMethod = "HMAC-SHA1"; // Método de assinatura
+        string endpoint = "https://platform.fatsecret.com/rest/server.api";
+        var parameters = new SortedDictionary<string, string>
+        {
+            { "method", "foods.search" },
+            { "format", "json" },
+            { "search_expression", searchExpression }
+        };
+
+        return await SendRequestAsync(endpoint, parameters);
+    }
+
+    // Função para obter detalhes de um alimento por ID
+    public async Task<string> GetFoodDetailsAsync(string foodId) {
+        string endpoint = "https://platform.fatsecret.com/rest/food/v4";
+        var parameters = new SortedDictionary<string, string>
+        {
+            { "food_id", foodId },
+            { "format", "json" }
+        };
+
+        return await SendRequestAsync(endpoint, parameters);
+    }
+
+    // Função auxiliar para enviar a solicitação com os parâmetros OAuth
+    private async Task<string> SendRequestAsync(string endpoint, SortedDictionary<string, string> parameters) {
+        string signatureMethod = "HMAC-SHA1";
         string version = "1.0";
         string nonce = Guid.NewGuid().ToString();
         string timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString();
 
-        var parameters = new SortedDictionary<string, string>
-        {
-        { "method", "foods.search" },
-        { "format", "json" },
-        { "search_expression", searchExpression },
-        { "oauth_consumer_key", _consumerKey },
-        { "oauth_signature_method", signatureMethod },
-        { "oauth_timestamp", timestamp },
-        { "oauth_nonce", nonce },
-        { "oauth_version", version }
-    };
+        parameters.Add("oauth_consumer_key", _consumerKey);
+        parameters.Add("oauth_signature_method", signatureMethod);
+        parameters.Add("oauth_timestamp", timestamp);
+        parameters.Add("oauth_nonce", nonce);
+        parameters.Add("oauth_version", version);
 
-        string baseString = GenerateBaseString("GET", "https://platform.fatsecret.com/rest/server.api", parameters);
+        string baseString = GenerateBaseString("GET", endpoint, parameters);
         string signature = GenerateSignature(baseString, _consumerSecret);
 
         parameters.Add("oauth_signature", signature);
 
-        var requestUri = $"https://platform.fatsecret.com/rest/server.api?{string.Join("&", parameters.Select(kvp => $"{Uri.EscapeDataString(kvp.Key)}={Uri.EscapeDataString(kvp.Value)}"))}";
+        var requestUri = $"{endpoint}?{string.Join("&", parameters.Select(kvp => $"{Uri.EscapeDataString(kvp.Key)}={Uri.EscapeDataString(kvp.Value)}"))}";
 
         var request = new HttpRequestMessage(HttpMethod.Get, requestUri);
-
         var response = await _httpClient.SendAsync(request);
         response.EnsureSuccessStatusCode();
 
-        var jsonResponse = await response.Content.ReadAsStringAsync();
-
-        if (string.IsNullOrEmpty(jsonResponse)) {
-
-            Console.WriteLine("A resposta da API está vazia.");
-            return null; // Ou outra lógica que você preferir
-        }
-
-        return jsonResponse;
-
+        return await response.Content.ReadAsStringAsync();
     }
 
     private string GenerateBaseString(string method, string url, SortedDictionary<string, string> parameters) {

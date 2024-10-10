@@ -1,6 +1,10 @@
 ﻿@page "/AdicionarConsumo"
 @page "/AdicionarConsumo/{ProdutoId}"
+@using HealFit.Model
+@using HealFit.Service
+@using Newtonsoft.Json
 @inject NavigationManager Navigation
+@inject FatSecretService FatSecret
 
 <section class="content px-4">
 
@@ -13,7 +17,7 @@
         </button>
 
         <div class="mb-2 d-flex flex-row align-items-center">
-            <input type="text" name="produto" placeholder="Produto" class="flex w-85 p-2 rounded border border-1 border-secondary" />
+            <input type="text" name="produto" placeholder="Produto" @bind="produtoPesquisa" @onkeypress="@(e => { if (e.Key == "Enter") Pesquisar(); })" class="flex w-85 p-2 rounded border border-1 border-secondary" />
             <button @onclick="Pesquisar" class="btn btn-primary pt-2 pb-2 ms-2">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
                     <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
@@ -23,33 +27,58 @@
         <div>
             <input type="number" placeholder="Quantidade em (unidade)" name="quantidade" class="flex w-100 p-2 rounded border border-1 border-secondary" />
         </div>
-        <p>@ProdutoId</p>
+        <p>Produto ID: @ProdutoId</p>
+        @if (foodDetails != null) {
+            <div>
+                <h4>@foodDetails.food_name</h4>
+                <p>Tipo: @foodDetails.food_type</p>
+                <a href="@foodDetails.food_url" target="_blank">Mais detalhes</a>
+            </div>
+        }
     </section>
 
     <main class="mt-2">
-        
-
-
+        <!-- Conteúdo principal da página pode ser adicionado aqui -->
     </main>
-
-
 </section>
 
 @code {
-
     [Parameter]
     public string ProdutoId { get; set; }
 
-    //Requisição a API para retornar 1 produto e suas informações
+    private string produtoPesquisa = string.Empty;
+    private Food foodDetails;
+
+    protected override async Task OnParametersSetAsync() {
+        // Busca automaticamente os detalhes do alimento se o ProdutoId for fornecido
+        if (!string.IsNullOrEmpty(ProdutoId) && int.TryParse(ProdutoId, out int foodId)) {
+            foodDetails = await GetFoodDetailsByIdAsync(foodId);
+        }
+    }
 
     private void Pesquisar() {
 
-        Navigation.NavigateTo("/Pesquisar");
+        Navigation.NavigateTo($"/Pesquisar");
     }
 
     private void Voltar() {
-
         Navigation.NavigateTo("ConsumoDiario");
     }
 
+    public async Task<Food> GetFoodDetailsByIdAsync(int foodId) {
+
+        if (foodId <= 0) {
+            throw new ArgumentException("ID do alimento inválido.", nameof(foodId));
+        }
+
+        var result = await FatSecret.GetFoodDetailsAsync(foodId.ToString());
+
+        if (string.IsNullOrEmpty(result)) {
+            Console.WriteLine("Nenhum detalhe do alimento encontrado.");
+            return null;
+        }
+
+        var foodDetails = JsonConvert.DeserializeObject<FoodDetailsResponse>(result)?.Food;
+        return foodDetails;
+    }
 }
