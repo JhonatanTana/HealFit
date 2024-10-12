@@ -1,7 +1,7 @@
 ﻿using HealFit.Model;
 using System.Net.Http.Json;
 
-namespace HealFit.Service; 
+namespace HealFit.Service;
 public class CepService {
 
     private readonly HttpClient _httpClient;

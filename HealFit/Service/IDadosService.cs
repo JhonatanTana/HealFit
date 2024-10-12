@@ -1,11 +1,6 @@
 ﻿using HealFit.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace HealFit.Service; 
+namespace HealFit.Service;
 public interface IDadosService {
 
     Task<DadosPessoais> GetDadosById(int id);

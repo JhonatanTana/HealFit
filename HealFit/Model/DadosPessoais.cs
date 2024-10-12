@@ -1,8 +1,4 @@
-﻿using SQLite;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace HealFit.Model; 
+﻿namespace HealFit.Model;
 public class DadosPessoais {
 
     public int DadosId { get; set; }

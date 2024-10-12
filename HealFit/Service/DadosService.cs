@@ -97,9 +97,9 @@ public class DadosService : IDadosService {
             }
 
             return returnResponse;
-        }       
+        }
     }
-    
+
     public async Task<bool> GetDadosByUserId(int id) {
 
         var returnResponse = false;
@@ -121,7 +121,7 @@ public class DadosService : IDadosService {
             }
 
             return returnResponse;
-        }       
+        }
     }
 
     public async Task<bool> UpdateDados(DadosPessoais dados) {

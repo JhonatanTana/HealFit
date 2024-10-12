@@ -1,6 +1,5 @@
 ﻿using HealFit.Service;
 using Microsoft.Extensions.Logging;
-using System.Net.Http;
 
 namespace HealFit;
 public static class MauiProgram {
@@ -15,6 +14,7 @@ public static class MauiProgram {
 
         builder.Services.AddSingleton<IUsuarioService, UsuarioService>();
         builder.Services.AddSingleton<IDadosService, DadosService>();
+        builder.Services.AddSingleton<IConsumoService, ConsumoService>();
         builder.Services.AddSingleton<CepService>();
         builder.Services.AddSingleton<BaseUrlProvider>();
 

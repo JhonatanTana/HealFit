@@ -1,6 +1,6 @@
 ﻿using HealFit.Model;
 
-namespace HealFit.Service; 
+namespace HealFit.Service;
 public interface IUsuarioService {
 
     Task<int?> VerificaUsuario(Usuario usuario);

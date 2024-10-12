@@ -1,5 +1,4 @@
 ﻿using HealFit.Model;
-using Microsoft.Maui.Controls.PlatformConfiguration;
 using Newtonsoft.Json;
 using System.Text;
 
@@ -39,7 +38,7 @@ public class UsuarioService : IUsuarioService {
         return usuarioId;
     }
 
-    public async Task<Usuario> GetUsuarioById (int id) {
+    public async Task<Usuario> GetUsuarioById(int id) {
 
         var returnResponse = new Usuario();
 
@@ -168,7 +167,7 @@ public class UsuarioService : IUsuarioService {
         var returnResponse = new List<Usuario>();
 
         try {
-            
+
             base_url = await SecureStorage.GetAsync("servidor");
 
             if (string.IsNullOrEmpty(base_url)) {
@@ -176,12 +175,12 @@ public class UsuarioService : IUsuarioService {
             }
 
             using (var client = new HttpClient()) {
-                
+
                 var url = $"{base_url}/Usuario";
                 var apiResponse = await client.GetAsync(url);
 
                 if (apiResponse.StatusCode == System.Net.HttpStatusCode.OK) {
-                    
+
                     var response = await apiResponse.Content.ReadAsStringAsync();
                     returnResponse = JsonConvert.DeserializeObject<List<Usuario>>(response) ?? new List<Usuario>();
                 }

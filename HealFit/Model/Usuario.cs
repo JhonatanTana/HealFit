@@ -1,7 +1,4 @@
-﻿using SQLite;
-using System.ComponentModel.DataAnnotations;
-
-namespace HealFit.Model; 
+﻿namespace HealFit.Model;
 public class Usuario {
 
     public int UsuarioId { get; set; }
