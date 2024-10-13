@@ -35,6 +35,8 @@ public class ConsumoService : IConsumoService {
 
                     returnResponse = true;
                 }
+
+                return returnResponse;
             }
         }
         catch (Exception ex) {
@@ -70,6 +72,8 @@ public class ConsumoService : IConsumoService {
 
                     returnResponse = true;
                 }
+
+                return returnResponse;
             }
         }
         catch (Exception ex) {
@@ -107,6 +111,8 @@ public class ConsumoService : IConsumoService {
                     var response = await apiResponse.Content.ReadAsStringAsync();
                     returnResponse = JsonConvert.DeserializeObject<List<ProdutoConsumido>>(response) ?? new List<ProdutoConsumido>();
                 }
+
+                return returnResponse;
             }
         }
         catch (Exception ex) {
@@ -144,6 +150,8 @@ public class ConsumoService : IConsumoService {
                     var response = await apiResponse.Content.ReadAsStringAsync();
                     returnResponse = JsonConvert.DeserializeObject<ProdutoConsumido>(response) ?? new ProdutoConsumido();
                 }
+
+                return returnResponse;
             }
         }
         catch (Exception ex) {
@@ -181,6 +189,8 @@ public class ConsumoService : IConsumoService {
                     var response = await apiResponse.Content.ReadAsStringAsync();
                     returnResponse = JsonConvert.DeserializeObject<List<ProdutoConsumido>>(response) ?? new List<ProdutoConsumido>();
                 }
+
+                return returnResponse;
             }
         }
         catch (Exception ex) {
@@ -219,6 +229,8 @@ public class ConsumoService : IConsumoService {
 
                     returnResponse = true;
                 }
+
+                return returnResponse;
             }
         }
         catch (Exception ex) {

@@ -1,5 +1,5 @@
 ﻿@page "/Porcao/{Produto}/{ServingId}/{ServingDescription}/{MetricServingAmount}/{MetricServingUnit}/{NumberOfUnits}/{MeasurementDescription}/{Calories}/{Carbohydrate}/{Protein}/{Fat}/{SaturatedFat}/{PolyunsaturatedFat}/{MonounsaturatedFat}/{Cholesterol}/{Sodium}/{Potassium}/{Fiber}/{Sugar}/{VitaminA}/{VitaminC}/{Calcium}/{Iron}/{TransFat}/{AddedSugars}/{VitaminD}"
-@page "/Edit/{ConsumoId}"
+@page "/Edit/{ConsumoId:int}"
 @using HealFit.Model
 @using System.Web
 @using System.Globalization
@@ -57,7 +57,7 @@
 
 @code {
 
-    [Parameter] public string ConsumoId { get; set; }
+    [Parameter] public int ConsumoId { get; set; }
     [Parameter] public string Produto { get; set; }
     [Parameter] public string ServingId { get; set; }
     [Parameter] public string ServingDescription { get; set; }
@@ -84,6 +84,7 @@
     [Parameter] public string? TransFat { get; set; }
     [Parameter] public string? AddedSugars { get; set; }
     [Parameter] public string? VitaminD { get; set; }
+    private double QuantidadeAntiga { get; set; }
     private double Quantidade { get; set; }
 
     private double originalMetricServingAmount;
@@ -107,7 +108,43 @@
     private double originalAddedSugars;
     private double originalVitaminD;
 
-    protected override void OnInitialized() {
+    protected override async Task OnInitializedAsync() {
+
+        if (ConsumoId > 0) {
+
+            var result = await ConsumoService.GetConsumoById(ConsumoId);
+
+            // Inicializa as variáveis com os valores originais para que sejam usados no cálculo
+            Produto = result.Produto;
+            ServingId = result.ServingId;
+            MetricServingUnit = result.MetricServingUnit;
+            NumberOfUnits = result.NumberOfUnits;
+            MeasurementDescription = result.MeasurementDescription;
+            ServingDescription = result.ServingDescription;
+            QuantidadeAntiga = result.Quantidade;
+            Calories = result.Calories;
+            Carbohydrate = result.Carbohydrate;
+            Protein = result.Protein;
+            Fat = result.Fat;
+            SaturatedFat = result.SaturatedFat;
+            PolyunsaturatedFat = result.PolyunsaturatedFat;
+            MonounsaturatedFat = result.MonounsaturatedFat;
+            Cholesterol = result.Cholesterol;
+            Sodium = result.Sodium;
+            Potassium = result.Potassium;
+            Fiber = result.Fiber;
+            Sugar = result.Sugar;
+            VitaminA = result.VitaminA;
+            VitaminC = result.VitaminC;
+            Calcium = result.Calcium;
+            Iron = result.Iron;
+            TransFat = result.TransFat;
+            AddedSugars = result.AddedSugars;
+            VitaminD = result.VitaminD;
+            MetricServingAmount = result.MetricServingAmount;
+
+            originalMetricServingAmount = Convert.ToDouble(MetricServingAmount, CultureInfo.InvariantCulture);
+        }
 
         originalMetricServingAmount = Convert.ToDouble(MetricServingAmount, CultureInfo.InvariantCulture);
 
@@ -131,38 +168,68 @@
         originalTransFat = double.Parse(TransFat ?? "0");
         originalAddedSugars = double.Parse(AddedSugars ?? "0");
         originalVitaminD = double.Parse(VitaminD ?? "0");
+
     }
 
     private void RecalculateValues(string userQuantity) {
+
         double quantity;
 
-        if (string.IsNullOrEmpty(userQuantity)) {
-            userQuantity = MetricServingAmount;
+        if (ConsumoId > 0) {
+
+            quantity = double.Parse(userQuantity, CultureInfo.InvariantCulture);
+            Quantidade = quantity;
+
+            Calories = FormatForDisplay((originalMetricServingAmount / QuantidadeAntiga * originalCalories) * (quantity / originalMetricServingAmount));
+            Carbohydrate = FormatForDisplay((originalMetricServingAmount / QuantidadeAntiga * originalCarbohydrate) * (quantity / originalMetricServingAmount));
+            Protein = FormatForDisplay((originalMetricServingAmount / QuantidadeAntiga * originalProtein) * (quantity / originalMetricServingAmount));
+            Fat = FormatForDisplay((originalMetricServingAmount / QuantidadeAntiga * originalFat) * (quantity / originalMetricServingAmount));
+            SaturatedFat = FormatForDisplay((originalMetricServingAmount / QuantidadeAntiga * originalSaturatedFat) * (quantity / originalMetricServingAmount));
+            PolyunsaturatedFat = FormatForDisplay((originalMetricServingAmount / QuantidadeAntiga * originalPolyunsaturatedFat) * (quantity / originalMetricServingAmount));
+            MonounsaturatedFat = FormatForDisplay((originalMetricServingAmount / QuantidadeAntiga * originalMonounsaturatedFat) * (quantity / originalMetricServingAmount));
+            Cholesterol = FormatForDisplay((originalMetricServingAmount / QuantidadeAntiga * originalCholesterol) * (quantity / originalMetricServingAmount));
+            Sodium = FormatForDisplay((originalMetricServingAmount / QuantidadeAntiga * originalSodium) * (quantity / originalMetricServingAmount));
+            Potassium = FormatForDisplay((originalMetricServingAmount / QuantidadeAntiga * originalPotassium) * (quantity / originalMetricServingAmount));
+            Fiber = FormatForDisplay((originalMetricServingAmount / QuantidadeAntiga * originalFiber) * (quantity / originalMetricServingAmount));
+            Sugar = FormatForDisplay((originalMetricServingAmount / QuantidadeAntiga * originalSugar) * (quantity / originalMetricServingAmount));
+            VitaminA = FormatForDisplay((originalMetricServingAmount / QuantidadeAntiga * originalVitaminA) * (quantity / originalMetricServingAmount));
+            VitaminC = FormatForDisplay((originalMetricServingAmount / QuantidadeAntiga * originalVitaminC) * (quantity / originalMetricServingAmount));
+            Calcium = FormatForDisplay((originalMetricServingAmount / QuantidadeAntiga * originalCalcium) * (quantity / originalMetricServingAmount));
+            Iron = FormatForDisplay((originalMetricServingAmount / QuantidadeAntiga * originalIron) * (quantity / originalMetricServingAmount));
+            TransFat = FormatForDisplay((originalMetricServingAmount / QuantidadeAntiga * originalTransFat) * (quantity / originalMetricServingAmount));
+            AddedSugars = FormatForDisplay((originalMetricServingAmount / QuantidadeAntiga * originalAddedSugars) * (quantity / originalMetricServingAmount));
+            VitaminD = FormatForDisplay((originalMetricServingAmount / QuantidadeAntiga * originalVitaminD) * (quantity / originalMetricServingAmount));
         }
+        else {
 
-        quantity = double.Parse(userQuantity, CultureInfo.InvariantCulture);
-        Quantidade = quantity; // Armazena a quantidade informada pelo usuário
+            if (string.IsNullOrEmpty(userQuantity)) {
+                userQuantity = MetricServingAmount;
+            }
 
-        // Atualiza os valores de nutrientes com base na quantidade informada
-        Calories = FormatForDisplay(quantity / originalMetricServingAmount * originalCalories);
-        Carbohydrate = FormatForDisplay(quantity / originalMetricServingAmount * originalCarbohydrate);
-        Protein = FormatForDisplay(quantity / originalMetricServingAmount * originalProtein);
-        Fat = FormatForDisplay(quantity / originalMetricServingAmount * originalFat);
-        SaturatedFat = FormatForDisplay(quantity / originalMetricServingAmount * originalSaturatedFat);
-        PolyunsaturatedFat = FormatForDisplay(quantity / originalMetricServingAmount * originalPolyunsaturatedFat);
-        MonounsaturatedFat = FormatForDisplay(quantity / originalMetricServingAmount * originalMonounsaturatedFat);
-        Cholesterol = FormatForDisplay(quantity / originalMetricServingAmount * originalCholesterol);
-        Sodium = FormatForDisplay(quantity / originalMetricServingAmount * originalSodium);
-        Potassium = FormatForDisplay(quantity / originalMetricServingAmount * originalPotassium);
-        Fiber = FormatForDisplay(quantity / originalMetricServingAmount * originalFiber);
-        Sugar = FormatForDisplay(quantity / originalMetricServingAmount * originalSugar);
-        VitaminA = FormatForDisplay(quantity / originalMetricServingAmount * originalVitaminA);
-        VitaminC = FormatForDisplay(quantity / originalMetricServingAmount * originalVitaminC);
-        Calcium = FormatForDisplay(quantity / originalMetricServingAmount * originalCalcium);
-        Iron = FormatForDisplay(quantity / originalMetricServingAmount * originalIron);
-        TransFat = FormatForDisplay(quantity / originalMetricServingAmount * originalTransFat);
-        AddedSugars = FormatForDisplay(quantity / originalMetricServingAmount * originalAddedSugars);
-        VitaminD = FormatForDisplay(quantity / originalMetricServingAmount * originalVitaminD);
+            quantity = double.Parse(userQuantity, CultureInfo.InvariantCulture);
+            Quantidade = quantity; // Armazena a quantidade informada pelo usuário
+
+            // Atualiza os valores de nutrientes com base na quantidade informada
+            Calories = FormatForDisplay(quantity / originalMetricServingAmount * originalCalories);
+            Carbohydrate = FormatForDisplay(quantity / originalMetricServingAmount * originalCarbohydrate);
+            Protein = FormatForDisplay(quantity / originalMetricServingAmount * originalProtein);
+            Fat = FormatForDisplay(quantity / originalMetricServingAmount * originalFat);
+            SaturatedFat = FormatForDisplay(quantity / originalMetricServingAmount * originalSaturatedFat);
+            PolyunsaturatedFat = FormatForDisplay(quantity / originalMetricServingAmount * originalPolyunsaturatedFat);
+            MonounsaturatedFat = FormatForDisplay(quantity / originalMetricServingAmount * originalMonounsaturatedFat);
+            Cholesterol = FormatForDisplay(quantity / originalMetricServingAmount * originalCholesterol);
+            Sodium = FormatForDisplay(quantity / originalMetricServingAmount * originalSodium);
+            Potassium = FormatForDisplay(quantity / originalMetricServingAmount * originalPotassium);
+            Fiber = FormatForDisplay(quantity / originalMetricServingAmount * originalFiber);
+            Sugar = FormatForDisplay(quantity / originalMetricServingAmount * originalSugar);
+            VitaminA = FormatForDisplay(quantity / originalMetricServingAmount * originalVitaminA);
+            VitaminC = FormatForDisplay(quantity / originalMetricServingAmount * originalVitaminC);
+            Calcium = FormatForDisplay(quantity / originalMetricServingAmount * originalCalcium);
+            Iron = FormatForDisplay(quantity / originalMetricServingAmount * originalIron);
+            TransFat = FormatForDisplay(quantity / originalMetricServingAmount * originalTransFat);
+            AddedSugars = FormatForDisplay(quantity / originalMetricServingAmount * originalAddedSugars);
+            VitaminD = FormatForDisplay(quantity / originalMetricServingAmount * originalVitaminD);
+        }
     }
 
     private string FormatForDisplay(double value) {
@@ -174,59 +241,88 @@
     private async Task Salvar() {
 
         var usuarioIdString = await JS.InvokeAsync<string>("localStorage.getItem", "usuarioId");
+        bool result;
 
-        ProdutoConsumido dadosInformados = null;
-
-        if (int.TryParse(usuarioIdString, out int usuarioId)) {
-
-            dadosInformados = new ProdutoConsumido {
-
-                    Produto = Produto,
-                    ServingId = ServingId,
-                    ServingDescription = ServingDescription,
-                    MetricServingAmount = MetricServingAmount,
-                    MetricServingUnit = MetricServingUnit,
-                    NumberOfUnits = NumberOfUnits,
-                    MeasurementDescription = MeasurementDescription,
-                    Calories = Calories,
-                    Carbohydrate = Carbohydrate,
-                    Protein = Protein,
-                    Fat = Fat,
-                    SaturatedFat = SaturatedFat,
-                    PolyunsaturatedFat = PolyunsaturatedFat,
-                    MonounsaturatedFat = MonounsaturatedFat,
-                    Cholesterol = Cholesterol,
-                    Sodium = Sodium,
-                    Potassium = Potassium,
-                    Fiber = Fiber,
-                    Sugar = Sugar,
-                    VitaminA = VitaminA,
-                    VitaminC = VitaminC,
-                    Calcium = Calcium,
-                    Iron = Iron,
-                    TransFat = TransFat,
-                    AddedSugars = AddedSugars,
-                    VitaminD = VitaminD,
-                    Data = DateTime.Now,
-                    UsuarioId = usuarioId,
-                    Quantidade = Quantidade
-                };
+        if (string.IsNullOrEmpty(usuarioIdString) || !int.TryParse(usuarioIdString, out int usuarioId)) {
+            // Exiba uma mensagem de erro para o usuário indicando que o ID do usuário não é válido
+            Console.WriteLine("Erro: ID do usuário não encontrado ou inválido.");
+            return;
         }
 
-        if (dadosInformados != null) {
+        var dadosInformados = new ProdutoConsumido {
+                Produto = Produto,
+                ServingId = ServingId,
+                ServingDescription = ServingDescription,
+                MetricServingAmount = MetricServingAmount,
+                MetricServingUnit = MetricServingUnit,
+                NumberOfUnits = NumberOfUnits,
+                MeasurementDescription = MeasurementDescription,
+                Calories = Calories,
+                Carbohydrate = Carbohydrate,
+                Protein = Protein,
+                Fat = Fat,
+                SaturatedFat = SaturatedFat,
+                PolyunsaturatedFat = PolyunsaturatedFat,
+                MonounsaturatedFat = MonounsaturatedFat,
+                Cholesterol = Cholesterol,
+                Sodium = Sodium,
+                Potassium = Potassium,
+                Fiber = Fiber,
+                Sugar = Sugar,
+                VitaminA = VitaminA,
+                VitaminC = VitaminC,
+                Calcium = Calcium,
+                Iron = Iron,
+                TransFat = TransFat,
+                AddedSugars = AddedSugars,
+                VitaminD = VitaminD,
+                Data = DateTime.Now,
+                UsuarioId = usuarioId,
+                Quantidade = Quantidade
+            };
 
-            var result = await ConsumoService.AddConsumo(dadosInformados);
+        if (ConsumoId > 0) {
 
-            if (result) {
+            dadosInformados.ConsumoId = ConsumoId;
+            result = await ConsumoService.UpdateConsumo(dadosInformados);
+        }
+        else {
 
-                Navigation.NavigateTo("/ConsumoDiario");
+            result = await ConsumoService.AddConsumo(dadosInformados);
+        }
+
+        if (result) {
+
+            Navigation.NavigateTo("/ConsumoDiario");
+        }
+        else {
+
+            if(ConsumoId > 0 ) {
+
+                await DisplayAlert("Erro", "Erro ao atualizar o consumo","Ok");
             }
+            else {
+                
+                await DisplayAlert("Erro", "Erro ao cadastrar o consumo","Ok");
+
+            }
+
         }
+
     }
 
 
     private void Voltar() {
-        Navigation.NavigateTo("Pesquisar");
+
+        if (ConsumoId > 0) {
+
+            Navigation.NavigateTo("/ConsumoDiario");
+        }
+        else {
+
+            Navigation.NavigateTo("Pesquisar");
+        }
+
     }
 
     private async Task DisplayAlert(string title, string message, string cancel) {
