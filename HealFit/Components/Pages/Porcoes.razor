@@ -82,8 +82,8 @@
     [Parameter] public string? TransFat { get; set; }
     [Parameter] public string? AddedSugars { get; set; }
     [Parameter] public string? VitaminD { get; set; }
+    private double Quantidade { get; set; }
 
-    private double originalQuantityValue;
     private double originalMetricServingAmount;
     private double originalCalories;
     private double originalCarbohydrate;
@@ -132,16 +132,16 @@
     }
 
     private void RecalculateValues(string userQuantity) {
-
         double quantity;
 
-        if (string.IsNullOrEmpty(userQuantity)) {  // Verifica se a quantidade do usuário está vazia e, se estiver, define o valor padrão
-
+        if (string.IsNullOrEmpty(userQuantity)) {
             userQuantity = MetricServingAmount;
         }
 
         quantity = double.Parse(userQuantity, CultureInfo.InvariantCulture);
+        Quantidade = quantity; // Armazena a quantidade informada pelo usuário
 
+        // Atualiza os valores de nutrientes com base na quantidade informada
         Calories = (quantity / originalMetricServingAmount * originalCalories).ToString(CultureInfo.InvariantCulture);
         Carbohydrate = FormatForDisplay(quantity / originalMetricServingAmount * originalCarbohydrate);
         Protein = FormatForDisplay(quantity / originalMetricServingAmount * originalProtein);
@@ -163,6 +163,7 @@
         VitaminD = FormatForDisplay(quantity / originalMetricServingAmount * originalVitaminD);
     }
 
+
     private string FormatForDisplay(double value) {
         return value.ToString("F3", new CultureInfo("pt-BR"));
     }
@@ -171,7 +172,6 @@
 
         var usuarioIdString = await JS.InvokeAsync<string>("localStorage.getItem", "usuarioId");
 
-        // Declara 'dadosInformados' fora do bloco if
         ProdutoConsumido dadosInformados = null;
 
         if (int.TryParse(usuarioIdString, out int usuarioId)) {
@@ -205,7 +205,8 @@
                     AddedSugars = AddedSugars,
                     VitaminD = VitaminD,
                     Data = DateTime.Now,
-                    UsuarioId = usuarioId
+                    UsuarioId = usuarioId,
+                    Quantidade = Quantidade
                 };
         }
 
