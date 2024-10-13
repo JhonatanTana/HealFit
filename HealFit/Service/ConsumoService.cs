@@ -88,7 +88,7 @@ public class ConsumoService : IConsumoService {
         return returnResponse;
     }
 
-    public async Task<List<ProdutoConsumido>> GetAllConsumoByDate(int id, DateTime data) {
+    public async Task<List<ProdutoConsumido>> GetAllConsumoByDate(int id, string data) {
 
         var returnResponse = new List<ProdutoConsumido>();
 
