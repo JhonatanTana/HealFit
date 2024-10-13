@@ -84,16 +84,16 @@
     private void AdicionarConsumo(Serving serving, string food_name) {
         // Função para tratar valores nulos e formatar números
         string FormatValue(object value) {
-            return value != null ? value.ToString().Replace(',', '.') : "0"; // Substitui vírgulas por pontos e trata nulos
+            return value != null ? value.ToString().Replace('/', '|') : "0"; // Substitui vírgulas por pontos e trata nulos
         }
 
         // Constrói a URL com todos os parâmetros
         var url = $"/Porcao/{food_name}/{serving.serving_id}/" +
-                  $"{HttpUtility.UrlEncode(serving.serving_description ?? "Descrição não disponível")}/" +
+                  $"{FormatValue(serving.serving_description)}/ " +
                   $"{FormatValue(serving.metric_serving_amount)}/" +
                   $"{HttpUtility.UrlEncode(serving.metric_serving_unit ?? "unidade não disponível")}/" +
                   $"{FormatValue(serving.number_of_units)}/" +
-                  $"{HttpUtility.UrlEncode(serving.measurement_description ?? "Medida não disponível")}/" +
+                  $"{FormatValue(serving.measurement_description)}/ " +
                   $"{FormatValue(serving.Calories)}/" +
                   $"{FormatValue(serving.Carbohydrate)}/" +
                   $"{FormatValue(serving.Protein)}/" +
