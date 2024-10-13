@@ -42,7 +42,12 @@ public class DadosService : IDadosService {
             }
         }
         catch (Exception ex) {
+
             string msg = ex.Message;
+
+            await MainThread.InvokeOnMainThreadAsync(async () => {
+                await App.Current.MainPage.DisplayAlert("Erro", msg, "OK");
+            });
         }
 
         return returnResponse;
@@ -70,7 +75,12 @@ public class DadosService : IDadosService {
             }
         }
         catch (Exception ex) {
+
             string msg = ex.Message;
+
+            await MainThread.InvokeOnMainThreadAsync(async () => {
+                await App.Current.MainPage.DisplayAlert("Erro", msg, "OK");
+            });
         }
 
         return returnResponse;
@@ -80,48 +90,71 @@ public class DadosService : IDadosService {
 
         var returnResponse = new DadosPessoais();
 
-        base_url = await SecureStorage.GetAsync("servidor");
+        try {
 
-        if (string.IsNullOrEmpty(base_url)) {
-            throw new Exception("Base URL não encontrada no SecureStorage.");
-        }
+            base_url = await SecureStorage.GetAsync("servidor");
 
-        using (var client = new HttpClient()) {
-            var url = $"{base_url}/Dados/{id}";
-            var apiResponse = await client.GetAsync(url);
-
-            if (apiResponse.StatusCode == System.Net.HttpStatusCode.OK) {
-
-                var response = await apiResponse.Content.ReadAsStringAsync();
-                returnResponse = JsonConvert.DeserializeObject<DadosPessoais>(response) ?? new DadosPessoais();
+            if (string.IsNullOrEmpty(base_url)) {
+                throw new Exception("Base URL não encontrada no SecureStorage.");
             }
 
-            return returnResponse;
+            using (var client = new HttpClient()) {
+                var url = $"{base_url}/Dados/{id}";
+                var apiResponse = await client.GetAsync(url);
+
+                if (apiResponse.StatusCode == System.Net.HttpStatusCode.OK) {
+
+                    var response = await apiResponse.Content.ReadAsStringAsync();
+                    returnResponse = JsonConvert.DeserializeObject<DadosPessoais>(response) ?? new DadosPessoais();
+                }
+
+            }
+
         }
+        catch (Exception ex) {
+            string msg = ex.Message;
+
+            await MainThread.InvokeOnMainThreadAsync(async () => {
+                await App.Current.MainPage.DisplayAlert("Erro", msg, "OK");
+            });
+
+        }
+
+        return returnResponse;
     }
 
     public async Task<bool> GetDadosByUserId(int id) {
 
         var returnResponse = false;
 
-        base_url = await SecureStorage.GetAsync("servidor");
+        try {
+            base_url = await SecureStorage.GetAsync("servidor");
 
-        if (string.IsNullOrEmpty(base_url)) {
-            throw new Exception("Base URL não encontrada no SecureStorage.");
-        }
-
-        using (var client = new HttpClient()) {
-
-            var url = $"{base_url}/Dados/Usuario/{id}";
-            var apiResponse = await client.GetAsync(url);
-
-            if (apiResponse.StatusCode == System.Net.HttpStatusCode.OK) {
-
-                returnResponse = true;
+            if (string.IsNullOrEmpty(base_url)) {
+                throw new Exception("Base URL não encontrada no SecureStorage.");
             }
 
-            return returnResponse;
+            using (var client = new HttpClient()) {
+
+                var url = $"{base_url}/Dados/Usuario/{id}";
+                var apiResponse = await client.GetAsync(url);
+
+                if (apiResponse.StatusCode == System.Net.HttpStatusCode.OK) {
+
+                    returnResponse = true;
+                }
+            }
         }
+        catch (Exception ex) {
+
+            string msg = ex.Message;
+
+            await MainThread.InvokeOnMainThreadAsync(async () => {
+                await App.Current.MainPage.DisplayAlert("Erro", msg, "OK");
+            });
+        }
+
+        return returnResponse;
     }
 
     public async Task<bool> UpdateDados(DadosPessoais dados) {
@@ -150,7 +183,12 @@ public class DadosService : IDadosService {
             }
         }
         catch (Exception ex) {
+
             string msg = ex.Message;
+
+            await MainThread.InvokeOnMainThreadAsync(async () => {
+                await App.Current.MainPage.DisplayAlert("Erro", msg, "OK");
+            });
         }
 
         return returnResponse;

@@ -15,8 +15,6 @@
 </section>
 
 @code {
-    private string servidor;
-
 
     private void login() {
         Navigation.NavigateTo("/Login");
@@ -25,6 +23,22 @@
     private void registrar() {
         Navigation.NavigateTo("/Registrar");
     }
+
+    // O codigo abaixo e temporario e deve ser removido no ambiente de produção
+
+    private string servidor;
+
+    protected async override Task OnInitializedAsync() {
+
+        servidor = await SecureStorage.GetAsync("servidor");
+
+        if (string.IsNullOrEmpty(servidor)) {
+
+            servidor = "http://192.168.0.1:8080";
+        }
+    }
+
+
 
     private async void Salvar() {
 

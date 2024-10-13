@@ -1,4 +1,5 @@
 ﻿@page "/Porcao/{Produto}/{ServingId}/{ServingDescription}/{MetricServingAmount}/{MetricServingUnit}/{NumberOfUnits}/{MeasurementDescription}/{Calories}/{Carbohydrate}/{Protein}/{Fat}/{SaturatedFat}/{PolyunsaturatedFat}/{MonounsaturatedFat}/{Cholesterol}/{Sodium}/{Potassium}/{Fiber}/{Sugar}/{VitaminA}/{VitaminC}/{Calcium}/{Iron}/{TransFat}/{AddedSugars}/{VitaminD}"
+@page "/Edit/{ConsumoId}"
 @using HealFit.Model
 @using System.Web
 @using System.Globalization
@@ -56,6 +57,7 @@
 
 @code {
 
+    [Parameter] public string ConsumoId { get; set; }
     [Parameter] public string Produto { get; set; }
     [Parameter] public string ServingId { get; set; }
     [Parameter] public string ServingDescription { get; set; }
@@ -110,25 +112,25 @@
         originalMetricServingAmount = Convert.ToDouble(MetricServingAmount, CultureInfo.InvariantCulture);
 
         // Inicializa as variáveis com os valores originais para que sejam usados no cálculo
-        originalCalories = double.Parse(Calories ?? "0", CultureInfo.InvariantCulture);
-        originalCarbohydrate = double.Parse(Carbohydrate ?? "0", CultureInfo.InvariantCulture);
-        originalProtein = double.Parse(Protein ?? "0", CultureInfo.InvariantCulture);
-        originalFat = double.Parse(Fat ?? "0", CultureInfo.InvariantCulture);
-        originalSaturatedFat = double.Parse(SaturatedFat ?? "0", CultureInfo.InvariantCulture);
-        originalPolyunsaturatedFat = double.Parse(PolyunsaturatedFat ?? "0", CultureInfo.InvariantCulture);
-        originalMonounsaturatedFat = double.Parse(MonounsaturatedFat ?? "0", CultureInfo.InvariantCulture);
-        originalCholesterol = double.Parse(Cholesterol ?? "0", CultureInfo.InvariantCulture);
-        originalSodium = double.Parse(Sodium ?? "0", CultureInfo.InvariantCulture);
-        originalPotassium = double.Parse(Potassium ?? "0", CultureInfo.InvariantCulture);
-        originalFiber = double.Parse(Fiber ?? "0", CultureInfo.InvariantCulture);
-        originalSugar = double.Parse(Sugar ?? "0", CultureInfo.InvariantCulture);
-        originalVitaminA = double.Parse(VitaminA ?? "0", CultureInfo.InvariantCulture);
-        originalVitaminC = double.Parse(VitaminC ?? "0", CultureInfo.InvariantCulture);
-        originalCalcium = double.Parse(Calcium ?? "0", CultureInfo.InvariantCulture);
-        originalIron = double.Parse(Iron ?? "0", CultureInfo.InvariantCulture);
-        originalTransFat = double.Parse(TransFat ?? "0", CultureInfo.InvariantCulture);
-        originalAddedSugars = double.Parse(AddedSugars ?? "0", CultureInfo.InvariantCulture);
-        originalVitaminD = double.Parse(VitaminD ?? "0", CultureInfo.InvariantCulture);
+        originalCalories = double.Parse(Calories ?? "0");
+        originalCarbohydrate = double.Parse(Carbohydrate ?? "0");
+        originalProtein = double.Parse(Protein ?? "0");
+        originalFat = double.Parse(Fat ?? "0");
+        originalSaturatedFat = double.Parse(SaturatedFat ?? "0");
+        originalPolyunsaturatedFat = double.Parse(PolyunsaturatedFat ?? "0");
+        originalMonounsaturatedFat = double.Parse(MonounsaturatedFat ?? "0");
+        originalCholesterol = double.Parse(Cholesterol ?? "0");
+        originalSodium = double.Parse(Sodium ?? "0");
+        originalPotassium = double.Parse(Potassium ?? "0");
+        originalFiber = double.Parse(Fiber ?? "0");
+        originalSugar = double.Parse(Sugar ?? "0");
+        originalVitaminA = double.Parse(VitaminA ?? "0");
+        originalVitaminC = double.Parse(VitaminC ?? "0");
+        originalCalcium = double.Parse(Calcium ?? "0");
+        originalIron = double.Parse(Iron ?? "0");
+        originalTransFat = double.Parse(TransFat ?? "0");
+        originalAddedSugars = double.Parse(AddedSugars ?? "0");
+        originalVitaminD = double.Parse(VitaminD ?? "0");
     }
 
     private void RecalculateValues(string userQuantity) {
@@ -142,7 +144,7 @@
         Quantidade = quantity; // Armazena a quantidade informada pelo usuário
 
         // Atualiza os valores de nutrientes com base na quantidade informada
-        Calories = (quantity / originalMetricServingAmount * originalCalories).ToString(CultureInfo.InvariantCulture);
+        Calories = FormatForDisplay(quantity / originalMetricServingAmount * originalCalories);
         Carbohydrate = FormatForDisplay(quantity / originalMetricServingAmount * originalCarbohydrate);
         Protein = FormatForDisplay(quantity / originalMetricServingAmount * originalProtein);
         Fat = FormatForDisplay(quantity / originalMetricServingAmount * originalFat);
@@ -163,9 +165,10 @@
         VitaminD = FormatForDisplay(quantity / originalMetricServingAmount * originalVitaminD);
     }
 
-
     private string FormatForDisplay(double value) {
-        return value.ToString("F3", new CultureInfo("pt-BR"));
+
+        // If the value has no significant decimal places, format it as an integer
+        return value % 1 == 0 ? value.ToString("F0", new CultureInfo("pt-BR")) : value.ToString("F3", new CultureInfo("pt-BR"));
     }
 
     private async Task Salvar() {
@@ -217,10 +220,6 @@
             if (result) {
 
                 Navigation.NavigateTo("/ConsumoDiario");
-            }
-            else {
-
-                await DisplayAlert("Erro", "Erro ao cadastrar o produto", "Ok");
             }
         }
     }

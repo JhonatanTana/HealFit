@@ -12,27 +12,39 @@ public class UsuarioService : IUsuarioService {
 
         int? usuarioId = null;
 
-        base_url = await SecureStorage.GetAsync("servidor");
+        try {
 
-        if (string.IsNullOrEmpty(base_url)) {
-            throw new Exception("Base URL não encontrada no SecureStorage.");
-        }
+            base_url = await SecureStorage.GetAsync("servidor");
 
-        using (var client = new HttpClient()) {
-            var url = $"{base_url}/usuario/login";
+            if (string.IsNullOrEmpty(base_url)) {
+                throw new Exception("Base URL não encontrada no SecureStorage.");
+            }
 
-            var serializeContent = JsonConvert.SerializeObject(usuario);
-            var apiResponse = await client.PostAsync(url, new StringContent(serializeContent, Encoding.UTF8, "application/json"));
+            using (var client = new HttpClient()) {
+                var url = $"{base_url}/usuario/login";
 
-            if (apiResponse.StatusCode == System.Net.HttpStatusCode.OK) {
-                var response = await apiResponse.Content.ReadAsStringAsync();
-                var deserializeResponse = JsonConvert.DeserializeObject<Usuario>(response);
+                var serializeContent = JsonConvert.SerializeObject(usuario);
+                var apiResponse = await client.PostAsync(url, new StringContent(serializeContent, Encoding.UTF8, "application/json"));
 
-                if (deserializeResponse != null) {
+                if (apiResponse.StatusCode == System.Net.HttpStatusCode.OK) {
+                    var response = await apiResponse.Content.ReadAsStringAsync();
+                    var deserializeResponse = JsonConvert.DeserializeObject<Usuario>(response);
 
-                    usuarioId = deserializeResponse.UsuarioId;
+                    if (deserializeResponse != null) {
+
+                        usuarioId = deserializeResponse.UsuarioId;
+                    }
                 }
             }
+
+        }
+        catch (Exception ex) {
+
+            string msg = ex.Message;
+
+            await MainThread.InvokeOnMainThreadAsync(async () => {
+                await App.Current.MainPage.DisplayAlert("Erro", msg, "OK");
+            });
         }
 
         return usuarioId;
@@ -61,7 +73,12 @@ public class UsuarioService : IUsuarioService {
             }
         }
         catch (Exception ex) {
+
             string msg = ex.Message;
+
+            await MainThread.InvokeOnMainThreadAsync(async () => {
+                await App.Current.MainPage.DisplayAlert("Erro", msg, "OK");
+            });
         }
 
         return returnResponse;
@@ -72,6 +89,7 @@ public class UsuarioService : IUsuarioService {
         var returnResponse = false;
 
         try {
+
             base_url = await SecureStorage.GetAsync("servidor");
 
             if (string.IsNullOrEmpty(base_url)) {
@@ -81,21 +99,26 @@ public class UsuarioService : IUsuarioService {
 
             using (var client = new HttpClient()) {
 
-                var url = $"{base_url}/Usuario/RedefinirSenha"; // A URL inclui o ID do usuário
+                var url = $"{base_url}/Usuario/RedefinirSenha"; 
 
                 var serializeContent = JsonConvert.SerializeObject(usuario);
                 var content = new StringContent(serializeContent, Encoding.UTF8, "application/json");
 
-                var apiResponse = await client.PutAsync(url, content); // Faz a chamada PUT
+                var apiResponse = await client.PutAsync(url, content); 
 
                 if (apiResponse.StatusCode == System.Net.HttpStatusCode.OK) {
 
-                    returnResponse = true; // Retorna true se a atualização foi bem-sucedida
+                    returnResponse = true;
                 }
             }
         }
         catch (Exception ex) {
+
             string msg = ex.Message;
+
+            await MainThread.InvokeOnMainThreadAsync(async () => {
+                await App.Current.MainPage.DisplayAlert("Erro", msg, "OK");
+            });
         }
 
         return returnResponse;
@@ -129,7 +152,12 @@ public class UsuarioService : IUsuarioService {
             }
         }
         catch (Exception ex) {
+
             string msg = ex.Message;
+
+            await MainThread.InvokeOnMainThreadAsync(async () => {
+                await App.Current.MainPage.DisplayAlert("Erro", msg, "OK");
+            });
         }
 
         return returnResponse;
@@ -156,7 +184,12 @@ public class UsuarioService : IUsuarioService {
             }
         }
         catch (Exception ex) {
+
             string msg = ex.Message;
+
+            await MainThread.InvokeOnMainThreadAsync(async () => {
+                await App.Current.MainPage.DisplayAlert("Erro", msg, "OK");
+            });
         }
 
         return returnResponse;
@@ -189,6 +222,10 @@ public class UsuarioService : IUsuarioService {
         catch (Exception ex) {
 
             string msg = ex.Message;
+
+            await MainThread.InvokeOnMainThreadAsync(async () => {
+                await App.Current.MainPage.DisplayAlert("Erro", msg, "OK");
+            });
         }
 
         return returnResponse;
