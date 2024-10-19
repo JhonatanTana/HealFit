@@ -1,0 +1,65 @@
+﻿@page "/"
+@inject NavigationManager Navigation
+
+<section class="content px-4">
+    <button class="btn btn-primary" @onclick="login">Login</button>
+    <button class="btn btn-primary" @onclick="registrar">Registrar</button>
+
+    <div class="mb-3 mt-3">
+        <label for="inputUsuario" class="form-label">Servidor</label>
+        <InputText @bind-Value="servidor" class="form-control" id="inputUsuario" />
+    </div>
+    <button type="submit" class="btn btn-primary w-100" @onclick="(() => Salvar())">Salvar</button>
+
+
+</section>
+
+@code {
+
+    private void login() {
+        Navigation.NavigateTo("/Login");
+    }
+
+    private void registrar() {
+        Navigation.NavigateTo("/Registrar");
+    }
+
+    // O codigo abaixo e temporario e deve ser removido no ambiente de produção
+
+    private string servidor;
+
+    protected async override Task OnInitializedAsync() {
+
+        servidor = await SecureStorage.GetAsync("servidor");
+
+        if (string.IsNullOrEmpty(servidor)) {
+
+            servidor = "http://192.168.0.1:8080";
+        }
+    }
+
+
+
+    private async void Salvar() {
+
+        if (string.IsNullOrEmpty(servidor)) {
+            DisplayAlert("Erro", "O campo servidor é obrigatório", "Ok");
+            return;
+        }
+
+        await SecureStorage.SetAsync("servidor", servidor);
+
+        var servidorGet = await SecureStorage.GetAsync("servidor");
+
+        await DisplayAlert("Sucesso", $"Servidor {servidorGet} salvo com sucesso", "Ok");
+
+        Navigation.NavigateTo("/");
+
+    }
+
+    private async Task DisplayAlert(string titulo, string descricao, string confirmacao) {
+
+        await App.Current.MainPage.DisplayAlert(titulo, descricao, confirmacao);
+    }
+
+}

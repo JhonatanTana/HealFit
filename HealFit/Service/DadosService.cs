@@ -1,15 +1,14 @@
 ﻿using HealFit.Model;
-using Microsoft.Maui.Controls.PlatformConfiguration;
 using Newtonsoft.Json;
 using System.Text;
 
+
 namespace HealFit.Service;
-public class ConsumoService : IConsumoService {
+public class DadosService : IDadosService {
 
-    private string? base_url;
-    private Page _page;
+    private string base_url;
 
-    public async Task<bool> AddConsumo(ProdutoConsumido consumo) {
+    public async Task<bool> AddDados(DadosPessoais dados) {
 
         var returnResponse = false;
 
@@ -18,25 +17,28 @@ public class ConsumoService : IConsumoService {
             base_url = await SecureStorage.GetAsync("servidor");
 
             if (string.IsNullOrEmpty(base_url)) {
-
                 throw new Exception("Base URL não encontrada no SecureStorage.");
             }
 
             using (var client = new HttpClient()) {
 
-                var url = $"{base_url}/Consumo";
+                var url = $"{base_url}/dados";
 
-                var serializeContent = JsonConvert.SerializeObject(consumo);
-                var content = new StringContent(serializeContent, Encoding.UTF8, "application/json");
+                var serializeContent = JsonConvert.SerializeObject(dados);
 
-                var apiResponse = await client.PostAsync(url, content);
+                var apiResponse = await client.PostAsync(url, new StringContent(serializeContent, Encoding.UTF8, "application/json"));
 
                 if (apiResponse.StatusCode == System.Net.HttpStatusCode.OK) {
 
-                    returnResponse = true;
-                }
+                    var response = await apiResponse.Content.ReadAsStringAsync();
+                    var deserializeResponse = JsonConvert.DeserializeObject<DadosPessoais>(response);
 
-                return returnResponse;
+                    if (deserializeResponse != null) {
+
+                        return true;
+                    }
+
+                }
             }
         }
         catch (Exception ex) {
@@ -51,12 +53,11 @@ public class ConsumoService : IConsumoService {
         return returnResponse;
     }
 
-    public async Task<bool> DeleteConsumo(int id) {
+    public async Task<bool> DeleteDados(int id) {
 
         var returnResponse = false;
 
         try {
-
             base_url = await SecureStorage.GetAsync("servidor");
 
             if (string.IsNullOrEmpty(base_url)) {
@@ -64,16 +65,13 @@ public class ConsumoService : IConsumoService {
             }
 
             using (var client = new HttpClient()) {
-                var url = $"{base_url}/Consumo/{id}";
+                var url = $"{base_url}/Dados/{id}";
 
                 var apiResponse = await client.DeleteAsync(url);
 
-                if (apiResponse.StatusCode == System.Net.HttpStatusCode.OK) {
-
-                    returnResponse = true;
+                if (apiResponse.StatusCode == System.Net.HttpStatusCode.NoContent) {
+                    returnResponse = true; // Success if the user was deleted
                 }
-
-                return returnResponse;
             }
         }
         catch (Exception ex) {
@@ -88,129 +86,48 @@ public class ConsumoService : IConsumoService {
         return returnResponse;
     }
 
-    public async Task<List<ProdutoConsumido>> GetAllConsumoByDate(int id, string data) {
+    public async Task<DadosPessoais> GetDadosById(int id) {
 
-        var returnResponse = new List<ProdutoConsumido>();
+        var returnResponse = new DadosPessoais();
 
         try {
 
             base_url = await SecureStorage.GetAsync("servidor");
 
             if (string.IsNullOrEmpty(base_url)) {
-
                 throw new Exception("Base URL não encontrada no SecureStorage.");
             }
 
             using (var client = new HttpClient()) {
-
-                var url = $"{base_url}/Consumo/Usuario/{id}/{data}";
+                var url = $"{base_url}/Dados/{id}";
                 var apiResponse = await client.GetAsync(url);
 
                 if (apiResponse.StatusCode == System.Net.HttpStatusCode.OK) {
 
                     var response = await apiResponse.Content.ReadAsStringAsync();
-                    returnResponse = JsonConvert.DeserializeObject<List<ProdutoConsumido>>(response) ?? new List<ProdutoConsumido>();
+                    returnResponse = JsonConvert.DeserializeObject<DadosPessoais>(response) ?? new DadosPessoais();
                 }
 
-                return returnResponse;
             }
+
         }
         catch (Exception ex) {
-
             string msg = ex.Message;
 
             await MainThread.InvokeOnMainThreadAsync(async () => {
                 await App.Current.MainPage.DisplayAlert("Erro", msg, "OK");
             });
+
         }
 
         return returnResponse;
     }
 
-    public async Task<ProdutoConsumido> GetConsumoById(int id) {
-
-        var returnResponse = new ProdutoConsumido();
-
-        try {
-
-            base_url = await SecureStorage.GetAsync("servidor");
-
-            if (string.IsNullOrEmpty(base_url)) {
-
-                throw new Exception("Base URL não encontrada no SecureStorage.");
-            }
-
-            using (var client = new HttpClient()) {
-
-                var url = $"{base_url}/Consumo/{id}";
-                var apiResponse = await client.GetAsync(url);
-
-                if (apiResponse.StatusCode == System.Net.HttpStatusCode.OK) {
-
-                    var response = await apiResponse.Content.ReadAsStringAsync();
-                    returnResponse = JsonConvert.DeserializeObject<ProdutoConsumido>(response) ?? new ProdutoConsumido();
-                }
-
-                return returnResponse;
-            }
-        }
-        catch (Exception ex) {
-
-            string msg = ex.Message;
-
-            await MainThread.InvokeOnMainThreadAsync(async () => {
-                await App.Current.MainPage.DisplayAlert("Erro", msg, "OK");
-            });
-        }
-
-        return returnResponse;
-    }
-
-    public async Task<List<ProdutoConsumido>> GetConsumoByUserId(int id) {
-
-        var returnResponse = new List<ProdutoConsumido>();
-
-        try {
-
-            base_url = await SecureStorage.GetAsync("servidor");
-
-            if (string.IsNullOrEmpty(base_url)) {
-
-                throw new Exception("Base URL não encontrada no SecureStorage.");
-            }
-
-            using (var client = new HttpClient()) {
-
-                var url = $"{base_url}/Consumo/Usuario/{id}";
-                var apiResponse = await client.GetAsync(url);
-
-                if (apiResponse.StatusCode == System.Net.HttpStatusCode.OK) {
-
-                    var response = await apiResponse.Content.ReadAsStringAsync();
-                    returnResponse = JsonConvert.DeserializeObject<List<ProdutoConsumido>>(response) ?? new List<ProdutoConsumido>();
-                }
-
-                return returnResponse;
-            }
-        }
-        catch (Exception ex) {
-
-            string msg = ex.Message;
-
-            await MainThread.InvokeOnMainThreadAsync(async () => {
-                await App.Current.MainPage.DisplayAlert("Erro", msg, "OK");
-            });
-        }
-
-        return returnResponse;
-    }
-
-    public async Task<bool> UpdateConsumo(ProdutoConsumido consumo) {
+    public async Task<bool> GetDadosByUserId(int id) {
 
         var returnResponse = false;
 
         try {
-
             base_url = await SecureStorage.GetAsync("servidor");
 
             if (string.IsNullOrEmpty(base_url)) {
@@ -218,19 +135,51 @@ public class ConsumoService : IConsumoService {
             }
 
             using (var client = new HttpClient()) {
-                var url = $"{base_url}/Consumo";
 
-                var serializeContent = JsonConvert.SerializeObject(consumo);
-                var content = new StringContent(serializeContent, Encoding.UTF8, "application/json");
-
-                var apiResponse = await client.PutAsync(url, content); 
+                var url = $"{base_url}/Dados/Usuario/{id}";
+                var apiResponse = await client.GetAsync(url);
 
                 if (apiResponse.StatusCode == System.Net.HttpStatusCode.OK) {
 
                     returnResponse = true;
                 }
+            }
+        }
+        catch (Exception ex) {
 
-                return returnResponse;
+            string msg = ex.Message;
+
+            await MainThread.InvokeOnMainThreadAsync(async () => {
+                await App.Current.MainPage.DisplayAlert("Erro", msg, "OK");
+            });
+        }
+
+        return returnResponse;
+    }
+
+    public async Task<bool> UpdateDados(DadosPessoais dados) {
+
+        var returnResponse = false;
+
+        try {
+            base_url = await SecureStorage.GetAsync("servidor");
+
+            if (string.IsNullOrEmpty(base_url)) {
+                throw new Exception("Base URL não encontrada no SecureStorage.");
+            }
+
+            using (var client = new HttpClient()) {
+                var url = $"{base_url}/Dados"; // A URL inclui o ID do usuário
+
+                var serializeContent = JsonConvert.SerializeObject(dados);
+                var content = new StringContent(serializeContent, Encoding.UTF8, "application/json");
+
+                var apiResponse = await client.PutAsync(url, content); // Faz a chamada PUT
+
+                if (apiResponse.StatusCode == System.Net.HttpStatusCode.OK) {
+
+                    returnResponse = true; // Retorna true se a atualização foi bem-sucedida
+                }
             }
         }
         catch (Exception ex) {

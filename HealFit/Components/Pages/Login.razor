@@ -1,0 +1,92 @@
+﻿@page "/Login"
+@using HealFit.Model
+@using HealFit.Service
+@inject IUsuarioService UsuarioService
+@inject IDadosService DadosService
+@inject NavigationManager Navigation
+@inject IJSRuntime JS
+
+<section class="content px-4">
+
+    <h3 class="mb-3">Login</h3>
+
+    <EditForm Model="requestUsuarioDTO" OnSubmit="Logar" class="flex flex-column w-100">
+        <div class="mb-3">
+            <input type="email" @bind="requestUsuarioDTO.Email" placeholder="Email" name="name" class="w-100 p-2 rounded border border-1 border-secondary" />
+        </div>
+        <div class="mb-3">
+            <input type="password" @bind="requestUsuarioDTO.Senha" placeholder="Senha" name="name" class="w-100 p-2 rounded border border-1 border-secondary" />
+        </div>
+        <div class="mb-3">
+            <input type="checkbox" @bind="lembrarUsuario" /> Lembrar de mim
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Login</button>
+
+    </EditForm>
+
+</section>
+
+@code {
+
+    private Usuario requestUsuarioDTO = new Usuario();
+    private List<Usuario> usuarios;
+    private bool lembrarUsuario = false;
+
+    protected override async Task OnInitializedAsync() {
+        // Verifica se há email e senha salvos no local storage
+        var emailSalvo = await JS.InvokeAsync<string>("localStorage.getItem", "email");
+        var senhaSalva = await JS.InvokeAsync<string>("localStorage.getItem", "senha");
+
+        if (!string.IsNullOrEmpty(emailSalvo) && !string.IsNullOrEmpty(senhaSalva)) {
+            requestUsuarioDTO.Email = emailSalvo;
+            requestUsuarioDTO.Senha = senhaSalva;
+            lembrarUsuario = true;
+        }
+    }
+
+
+    private async Task Logar() {
+
+        var login = new Usuario {
+                Email = requestUsuarioDTO.Email,
+                Senha = requestUsuarioDTO.Senha
+            };
+
+        // A API retorna o usuarioId após o login
+        var usuarioId = await UsuarioService.VerificaUsuario(login);
+
+        if (usuarioId != null) {
+
+            if (lembrarUsuario) {
+                // Salva o email e a senha no local storage
+                await JS.InvokeVoidAsync("localStorage.setItem", "email", requestUsuarioDTO.Email);
+                await JS.InvokeVoidAsync("localStorage.setItem", "senha", requestUsuarioDTO.Senha);
+            }
+            else {
+                // Remove o email e a senha do local storage
+                await JS.InvokeVoidAsync("localStorage.removeItem", "email");
+                await JS.InvokeVoidAsync("localStorage.removeItem", "senha");
+            }
+
+            // Salva o ID do usuário no local storage independentemente de 'lembrarUsuario'
+            await JS.InvokeVoidAsync("localStorage.setItem", "usuarioId", usuarioId.Value.ToString());
+
+            var dadosPessoais = await DadosService.GetDadosByUserId(usuarioId.Value);
+
+            if (!dadosPessoais) {
+                Navigation.NavigateTo($"/CadastroDados/{usuarioId.Value}");
+            }
+            else {
+                Navigation.NavigateTo("/Home");
+            }
+        }
+        else {
+            await DisplayAlert("Erro", "Usuario ou Senha inválido", "Ok");
+        }
+    }
+
+    private async Task DisplayAlert(string title, string message, string cancel) {
+
+        await Application.Current.MainPage.DisplayAlert(title, message, cancel);
+    }
+}

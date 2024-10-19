@@ -6,6 +6,6 @@ public interface IConsumoService {
     Task<bool> AddConsumo(ProdutoConsumido consumo);
     Task<bool> UpdateConsumo(ProdutoConsumido consumo);
     Task<bool> DeleteConsumo(int id);
-    Task<List<ProdutoConsumido>> GetAllConsumoByDate(int id, DateTime data);
+    Task<List<ProdutoConsumido>> GetAllConsumoByDate(int id, string data);
     Task<ProdutoConsumido> GetConsumoById(int id);
 }

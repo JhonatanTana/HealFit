@@ -1,0 +1,126 @@
+﻿@page "/AdicionarConsumo/{ProdutoId}"
+@using HealFit.Model
+@using HealFit.Service
+@using Newtonsoft.Json
+@using System.Globalization
+@using System.Web
+@using System
+@inject NavigationManager Navigation
+@inject FatSecretService FatSecret
+
+<section class="content px-4">
+
+    <section>
+        <button class="btn btn-outline-primary mb-2" @onclick="Voltar">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8" />
+            </svg>
+            Voltar
+        </button>
+
+        @if (foodDetails != null) {
+            <div>
+                <h4 class="align-self-center mt-2">@foodDetails.food_name</h4>
+
+                @if (foodDetails.servings != null && foodDetails.servings.Serving != null) {
+                    @foreach (var serving in foodDetails.servings.Serving) {
+                        <div class=" border border-1 border-secondary- p-2 m-2 d-flex flex-row justify-content-between">
+                            <p>Descrição: @serving.serving_description</p>
+                            <button class="btn btn-primary" @onclick="() => AdicionarConsumo(serving, foodDetails.food_name)">
+                                Selecionar
+                            </button>
+                        </div>
+                    }
+                }
+            </div>
+        }
+    </section>
+
+    <main class="mt-2">
+        <!-- Conteúdo principal da página pode ser adicionado aqui -->
+    </main>
+</section>
+
+@code {
+    [Parameter]
+    public string ProdutoId { get; set; }
+
+    private string produtoPesquisa = string.Empty;
+    private Food foodDetails;
+
+    protected override async Task OnParametersSetAsync() {
+        // Busca automaticamente os detalhes do alimento se o ProdutoId for fornecido
+        if (!string.IsNullOrEmpty(ProdutoId) && int.TryParse(ProdutoId, out int foodId)) {
+            foodDetails = await GetFoodDetailsByIdAsync(foodId);
+        }
+    }
+
+    private void Pesquisar() {
+
+        Navigation.NavigateTo($"/Pesquisar");
+    }
+
+    private void Voltar() {
+        Navigation.NavigateTo("ConsumoDiario");
+    }
+
+    public async Task<Food> GetFoodDetailsByIdAsync(int foodId) {
+
+        if (foodId <= 0) {
+            throw new ArgumentException("ID do alimento inválido.", nameof(foodId));
+        }
+
+        var result = await FatSecret.GetFoodDetailsAsync(foodId.ToString());
+
+        if (string.IsNullOrEmpty(result)) {
+            Console.WriteLine("Nenhum detalhe do alimento encontrado.");
+            return null;
+        }
+
+        var foodDetails = JsonConvert.DeserializeObject<FoodDetailsResponse>(result)?.Food;
+        return foodDetails;
+    }
+
+    private void AdicionarConsumo(Serving serving, string food_name) {
+        // Função para tratar valores nulos e formatar números
+        string FormatValue(object value) {
+            return value != null ? value.ToString().Replace('/', '|') : "0"; // Substitui vírgulas por pontos e trata nulos
+        }
+
+        // Constrói a URL com todos os parâmetros
+        var url = $"/Porcao/{food_name}/{serving.serving_id}/" +
+                  $"{FormatValue(serving.serving_description)}/ " +
+                  $"{FormatValue(serving.metric_serving_amount)}/" +
+                  $"{HttpUtility.UrlEncode(serving.metric_serving_unit ?? "unidade não disponível")}/" +
+                  $"{FormatValue(serving.number_of_units)}/" +
+                  $"{FormatValue(serving.measurement_description)}/ " +
+                  $"{FormatValue(serving.Calories)}/" +
+                  $"{FormatValue(serving.Carbohydrate)}/" +
+                  $"{FormatValue(serving.Protein)}/" +
+                  $"{FormatValue(serving.Fat)}/" +
+                  $"{FormatValue(serving.saturated_fat)}/" +
+                  $"{FormatValue(serving.polyunsaturated_fat)}/" +
+                  $"{FormatValue(serving.monounsaturated_fat)}/" +
+                  $"{FormatValue(serving.Cholesterol)}/" +
+                  $"{FormatValue(serving.Sodium)}/" +
+                  $"{FormatValue(serving.Potassium)}/" +
+                  $"{FormatValue(serving.Fiber)}/" +
+                  $"{FormatValue(serving.Sugar)}/" +
+                  $"{FormatValue(serving.vitamin_a)}/" +
+                  $"{FormatValue(serving.vitamin_c)}/" +
+                  $"{FormatValue(serving.Calcium)}/" +
+                  $"{FormatValue(serving.Iron)}/" +
+                  $"{FormatValue(serving.trans_fat)}/" +
+                  $"{FormatValue(serving.added_sugars)}/" +
+                  $"{FormatValue(serving.vitamin_d)}";
+
+        // Verifica se a URL contém valores em branco
+        if (url.Contains("//")) {
+            // Tratar ou logar erro
+        }
+
+        Navigation.NavigateTo(url);
+        Console.WriteLine(url);
+    }
+
+}

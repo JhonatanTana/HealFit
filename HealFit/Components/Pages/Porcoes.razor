@@ -1,5 +1,6 @@
 ﻿@page "/Porcao/{Produto}/{ServingId}/{ServingDescription}/{MetricServingAmount}/{MetricServingUnit}/{NumberOfUnits}/{MeasurementDescription}/{Calories}/{Carbohydrate}/{Protein}/{Fat}/{SaturatedFat}/{PolyunsaturatedFat}/{MonounsaturatedFat}/{Cholesterol}/{Sodium}/{Potassium}/{Fiber}/{Sugar}/{VitaminA}/{VitaminC}/{Calcium}/{Iron}/{TransFat}/{AddedSugars}/{VitaminD}"
 @page "/Edit/{ConsumoId:int}"
+@page "/Detalhes/{DetalheId:int}"
 @using HealFit.Model
 @using System.Web
 @using System.Globalization
@@ -22,9 +23,12 @@
 
     <main>
 
-        <div class="mb-2 mt-2">
-            <input type="number" @onchange="@(e => RecalculateValues(e.Value.ToString()))" placeholder="Quantidade em (@MetricServingUnit)" class="flex w-100 p-2 rounded border border-1 border-secondary" />
-        </div>
+        @if(DetalheId < 0) {
+
+            <div class="mb-2 mt-2">
+                <input type="number" @onchange="@(e => RecalculateValues(e.Value.ToString()))" placeholder="Quantidade em (@MetricServingUnit)" class="flex w-100 p-2 rounded border border-1 border-secondary" />
+            </div>
+        }
 
         <h4 class="mb-3">Detalhes do Consumo</h4>
 
@@ -50,7 +54,10 @@
         <p><strong>Gordura Trans:</strong> @TransFat g</p>
         <p><strong>Açúcares Adicionados:</strong> @AddedSugars g</p>
 
-        <button class="btn btn-primary w-100 mb-4 mt-2" @onclick="Salvar">Adicionar</button>
+        @if(DetalheId < 0) {
+
+            <button class="btn btn-primary w-100 mb-4 mt-2" @onclick="Salvar">Adicionar</button>
+        }
     </main>
 
 </section>
@@ -58,6 +65,7 @@
 @code {
 
     [Parameter] public int ConsumoId { get; set; }
+    [Parameter] public int DetalheId { get; set; }
     [Parameter] public string Produto { get; set; }
     [Parameter] public string ServingId { get; set; }
     [Parameter] public string ServingDescription { get; set; }
@@ -110,9 +118,18 @@
 
     protected override async Task OnInitializedAsync() {
 
-        if (ConsumoId > 0) {
+        ProdutoConsumido result = null;
 
-            var result = await ConsumoService.GetConsumoById(ConsumoId);
+        if (ConsumoId > 0 || DetalheId > 0) {
+
+            if (ConsumoId > 0) {
+
+                result = await ConsumoService.GetConsumoById(ConsumoId);
+            }
+            else if(DetalheId > 0) {
+
+                result = await ConsumoService.GetConsumoById(DetalheId);
+            }
 
             // Inicializa as variáveis com os valores originais para que sejam usados no cálculo
             Produto = result.Produto;
@@ -302,7 +319,7 @@
                 await DisplayAlert("Erro", "Erro ao atualizar o consumo","Ok");
             }
             else {
-                
+
                 await DisplayAlert("Erro", "Erro ao cadastrar o consumo","Ok");
 
             }
@@ -311,12 +328,15 @@
 
     }
 
-
     private void Voltar() {
 
         if (ConsumoId > 0) {
 
             Navigation.NavigateTo("/ConsumoDiario");
+        }
+        else if (DetalheId > 0) {
+
+            Navigation.NavigateTo("/Historico");
         }
         else {
 
