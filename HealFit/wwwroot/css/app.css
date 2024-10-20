@@ -84,8 +84,9 @@ h1:focus {
 }
 
 .Butao{
-    width:60px;
+    width:fit-content;
     height:40px;
+    background-color:green;
 }
 
 .slider-container {
@@ -112,4 +113,21 @@ h1:focus {
     box-sizing: border-box;
     justify-items: center;
     justify-content: center;
+}
+
+.Espaco{
+    gap:100px, 50px;
+    margin-top:50px;
+    margin-left:110px;  
+}
+
+.Entradas {
+    
+    display:flex;
+    align-items:center;
+    width: 300px;
+    height: 60px;
+    border: 2px, groove;
+    align-content: center;
+    border-radius:15px;
 }

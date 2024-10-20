@@ -12,54 +12,59 @@
     <div class="slider" style="transform: translateX(@(currentSlide * -100)%);">
         <div class="slide">
             <div class="mb-3">
-                <input type="text" name="Nome" placeholder="Nome" @bind="cadastraDadosDTO.Nome" class="w-100 p-2 rounded border border-1 border-secondary" />
+                <a>Nome</a>
+                <input type="text" name="Nome" @bind="cadastraDadosDTO.Nome" class=" Entradas flex align-items-center" />
             </div>
             <div class="mb-3">
-                <input type="text" name="Sobrenome" placeholder="Sobrenome" @bind="cadastraDadosDTO.Sobrenome" class="w-100 p-2 rounded border border-1 border-secondary" />
+                <a>Sobrenome</a>    
+                <input type="text" name="Sobrenome" @bind="cadastraDadosDTO.Sobrenome" class=" Entradas p-3" />
             </div>
             <div class="mb-3">
                 <label>Data de Nascimento</label>
-                <input type="date" name="Data de Nascimento" @bind="cadastraDadosDTO.DataNascimento" class="w-100 p-2 rounded border border-1 border-secondary" />
+                <input type="date" name="Data de Nascimento" @bind="cadastraDadosDTO.DataNascimento" class=" Entradas p-3" />
             </div>
         </div>
         <div class="slide">
             <div class="mb-3">
-                <input type="number" name="Altura" placeholder="Altura (em Metros)" @bind="cadastraDadosDTO.Altura" step="0.01" class="w-100 p-2 rounded border border-1 border-secondary" />
+                <a>Altura (Metros)</a>
+                <input type="number" name="Altura" @bind="cadastraDadosDTO.Altura" step="0.01" class=" Entradas p-3" />
             </div>
             <div class="mb-3">
-                <input type="number" name="Peso" placeholder="Peso (em Kg)" @bind="cadastraDadosDTO.Peso" step="0.01" class="w-100 p-2 rounded border border-1 border-secondary" />
+                <a>Peso (Kgs)</a>
+                <input type="number" name="Peso" @bind="cadastraDadosDTO.Peso" step="0.01" class=" Entradas p-3" />
             </div>
         </div>
         <div class="slide">
-            <div class="Butao">
-                <input type="number" name="Cep" placeholder="CEP" value="@cadastraDadosDTO.Cep" class="w-100 p-2 rounded border border-1 border-secondary" @onchange="BuscarCep" />
+            <div class="">
+                <input type="number" name="Cep" placeholder="CEP" value="@cadastraDadosDTO.Cep" class=" Entradas p-3" @onchange="BuscarCep" />
             </div>
-            <div class="Butao">
-                <input type="text" name="Cidade" placeholder="Cidade" @bind="cadastraDadosDTO.Cidade" class="w-100 p-2 rounded border border-1 border-secondary" readonly="@CepEncontrado" />
+            <div class="">
+                <input type="text" name="Cidade" placeholder="Cidade" @bind="cadastraDadosDTO.Cidade" class=" Entradas p-3" readonly="@CepEncontrado" />
             </div>
-            <div class="Butao">
-                <input type="text" name="Estado" placeholder="Estado" @bind="cadastraDadosDTO.Estado" class="w-100 p-2 rounded border border-1 border-secondary" readonly="@CepEncontrado" />
+            <div class="">
+                <input type="text" name="Estado" placeholder="Estado" @bind="cadastraDadosDTO.Estado" class=" Entradas p-3" readonly="@CepEncontrado" />
             </div>
-            <div class="Butao">
-                <input type="text" name="Bairro" placeholder="Bairro" @bind="cadastraDadosDTO.Bairro" class="w-100 p-2 rounded border border-1 border-secondary" readonly="@CepEncontrado" />
+            <div class="">
+                <input type="text" name="Bairro" placeholder="Bairro" @bind="cadastraDadosDTO.Bairro" class=" Entradas p-3" readonly="@CepEncontrado" />
             </div>
-            <div class="Butao">
-                <input type="text" name="Rua" placeholder="Rua" @bind="cadastraDadosDTO.Rua" class="w-100 p-2 rounded border border-1 border-secondary" readonly="@CepEncontrado" />
+            <div class="">
+                <input type="text" name="Rua" placeholder="Rua" @bind="cadastraDadosDTO.Rua" class=" Entradas p-3" readonly="@CepEncontrado" />
             </div>
-            <div class="Butao">
-                <input type="text" name="Numero" placeholder="Numero" @bind="cadastraDadosDTO.Numero" class="w-100 p-2 rounded border border-1 border-secondary" />
+            <div class="mb">
+                <input type="text" name="Numero" placeholder="Numero" @bind="cadastraDadosDTO.Numero" class=" Entradas p-3" />
             </div>
-                <div class="mb-3">
-                    <input type="text" name="Complemento" placeholder="Complemento" @bind="cadastraDadosDTO.Complemento" class="w-100 p-2 rounded border border-1 border-secondary" />
+                <div class=" Entradas p-3">
+                    <input type="text" name="Complemento" placeholder="Complemento" @bind="cadastraDadosDTO.Complemento" class=" Entradas p-3" />
                 </div>
         </div>
             <div class="slide">
                 <button type="submit" class="btn btn-primary w-100" @onsubmit=(CadastrarDados)>Cadastrar</button>
             </div>
     </div>
-    <button @onclick="PreviousSlide" class="btn-primary">Previous</button>
-    <button @onclick="NextSlide" class="btn-primary">Next</button>
-
+    <div class="gap-4 Espaco">
+        <button @onclick="PreviousSlide" class="Butao">Previous</button>
+        <button @onclick="NextSlide" class="Butao">Next</button>
+    </div>
 </div>
 
 
