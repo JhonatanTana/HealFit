@@ -13,7 +13,7 @@
         <div class="slide">
             <div class="mb-3">
                 <a>Nome</a>
-                <input type="text" name="Nome" @bind="cadastraDadosDTO.Nome" class=" Entradas flex align-items-center" />
+                <input type="text" name="Nome" @bind="cadastraDadosDTO.Nome" class="Entradas flex align-items-center" />
             </div>
             <div class="mb-3">
                 <a>Sobrenome</a>    
@@ -35,26 +35,34 @@
             </div>
         </div>
         <div class="slide">
+
             <div class="">
+                <a>CEP</a>
                 <input type="number" name="Cep" placeholder="CEP" value="@cadastraDadosDTO.Cep" class=" Entradas p-3" @onchange="BuscarCep" />
             </div>
             <div class="">
+                <a>CEP</a>
                 <input type="text" name="Cidade" placeholder="Cidade" @bind="cadastraDadosDTO.Cidade" class=" Entradas p-3" readonly="@CepEncontrado" />
             </div>
             <div class="">
+                <a>CEP</a>
                 <input type="text" name="Estado" placeholder="Estado" @bind="cadastraDadosDTO.Estado" class=" Entradas p-3" readonly="@CepEncontrado" />
             </div>
             <div class="">
+                <a>CEP</a>
                 <input type="text" name="Bairro" placeholder="Bairro" @bind="cadastraDadosDTO.Bairro" class=" Entradas p-3" readonly="@CepEncontrado" />
             </div>
             <div class="">
+                <a>CEP</a>
                 <input type="text" name="Rua" placeholder="Rua" @bind="cadastraDadosDTO.Rua" class=" Entradas p-3" readonly="@CepEncontrado" />
             </div>
-            <div class="mb">
+            <div class="">
+                <a>CEP</a>
                 <input type="text" name="Numero" placeholder="Numero" @bind="cadastraDadosDTO.Numero" class=" Entradas p-3" />
             </div>
-                <div class=" Entradas p-3">
-                    <input type="text" name="Complemento" placeholder="Complemento" @bind="cadastraDadosDTO.Complemento" class=" Entradas p-3" />
+                <div class="">
+                <a>CEP</a>
+                <input type="text" name="Complemento" placeholder="Complemento" @bind="cadastraDadosDTO.Complemento" class="Entradas p-3" />
                 </div>
         </div>
             <div class="slide">
@@ -62,8 +70,15 @@
             </div>
     </div>
     <div class="gap-4 Espaco">
-        <button @onclick="PreviousSlide" class="Butao">Previous</button>
-        <button @onclick="NextSlide" class="Butao">Next</button>
+        <button @onclick="PreviousSlide" class="Butao">
+            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8" />
+            </svg>
+        </button>
+        <button @onclick="NextSlide" class="Butao">
+            <img width="36" height="36" src="https://img.icons8.com/material-outlined/24/circled-right-2.png" alt="circled-right-2" />
+        </button>
+
     </div>
 </div>
 
