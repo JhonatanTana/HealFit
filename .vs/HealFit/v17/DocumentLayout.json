@@ -3,12 +3,12 @@
   "WorkspaceRootPath": "C:\\HealFit\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{23C43B19-29B7-4AAA-87D1-2EE50181597A}|HealFit\\HealFit.csproj|c:\\healfit\\healfit\\components\\pages\\cadastrodados.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{23C43B19-29B7-4AAA-87D1-2EE50181597A}|HealFit\\HealFit.csproj|solutionrelative:healfit\\components\\pages\\cadastrodados.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{23C43B19-29B7-4AAA-87D1-2EE50181597A}|HealFit\\HealFit.csproj|c:\\healfit\\healfit\\wwwroot\\css\\app.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
       "RelativeMoniker": "D:0:0:{23C43B19-29B7-4AAA-87D1-2EE50181597A}|HealFit\\HealFit.csproj|solutionrelative:healfit\\wwwroot\\css\\app.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{23C43B19-29B7-4AAA-87D1-2EE50181597A}|HealFit\\HealFit.csproj|c:\\healfit\\healfit\\components\\pages\\cadastrodados.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{23C43B19-29B7-4AAA-87D1-2EE50181597A}|HealFit\\HealFit.csproj|solutionrelative:healfit\\components\\pages\\cadastrodados.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{23C43B19-29B7-4AAA-87D1-2EE50181597A}|HealFit\\HealFit.csproj|c:\\healfit\\healfit\\components\\pages\\porcoes.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
@@ -22,30 +22,30 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "app.css",
               "DocumentMoniker": "C:\\HealFit\\HealFit\\wwwroot\\css\\app.css",
               "RelativeDocumentMoniker": "HealFit\\wwwroot\\css\\app.css",
               "ToolTip": "C:\\HealFit\\HealFit\\wwwroot\\css\\app.css",
               "RelativeToolTip": "HealFit\\wwwroot\\css\\app.css",
-              "ViewState": "AgIAAEkAAAAAAAAAAAAAAGcAAAAkAAAAAAAAAA==",
+              "ViewState": "AgIAAIwAAAAAAAAAAAAYwJUAAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
               "WhenOpened": "2024-10-20T15:30:07.813Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "CadastroDados.razor",
               "DocumentMoniker": "C:\\HealFit\\HealFit\\Components\\Pages\\CadastroDados.razor",
               "RelativeDocumentMoniker": "HealFit\\Components\\Pages\\CadastroDados.razor",
               "ToolTip": "C:\\HealFit\\HealFit\\Components\\Pages\\CadastroDados.razor",
               "RelativeToolTip": "HealFit\\Components\\Pages\\CadastroDados.razor",
-              "ViewState": "AgIAACwAAAAAAAAAAAAuwEkAAAA9AAAAAAAAAA==",
+              "ViewState": "AgIAAFEAAAAAAAAAAAAQwFsAAAA1AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2024-10-20T15:21:28.266Z",
               "EditorCaption": ""
@@ -60,8 +60,7 @@
               "RelativeToolTip": "HealFit\\Components\\Pages\\Porcoes.razor",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-10-19T21:39:49.761Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-19T21:39:49.761Z"
             }
           ]
         }

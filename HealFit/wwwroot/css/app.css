@@ -83,11 +83,21 @@ h1:focus {
     }
 }
 
-.Butao{
-    width:fit-content;
-    height:100%;
+.Butao {
+    width: fit-content;
+    height: 100%;
+    background-color: none;
+    background:none;
+}
 
-    background-color:inherit;
+
+.BtnCad {
+    text-align: center;
+    width: 360px;
+    height: 60px;
+    border: 1px, outset, #0000007b;
+    border-radius: 15px;
+    background: linear-gradient(rgba(145,233,201,1), rgb(40, 135, 101));
 }
 
 .slider-container {
@@ -95,13 +105,14 @@ h1:focus {
     align-items: center;
     height: 100vh;
     z-index: -20;
-    background: linear-gradient(#59dc3f, #ffffff);
+    background: rgb(42,210,149);
+    background: linear-gradient(234deg, rgba(42,210,149,1) 2%, rgba(145,233,201,1) 25%, rgba(228,245,240,1) 100%);
 }
 
 
 .slider {
     display: flex;
-    transition: transform 0.7s ease;
+    transition: transform 0.2s ease-in-out;
     display: flex;
 }
 
@@ -112,30 +123,31 @@ h1:focus {
     max-height: 100%;
     padding: 20px;
     box-sizing: border-box;
-    border:5px, solid;
     border-color:black;
     height:80vh;
     height:80vh;
 }
 
 .Espaco{
-    margin-top:50px;
-    margin-left:130px;  
+    margin-top:30px;
+    margin-left:100px;  
 }
 
 .Entradas {
-    text-align:center;
-    display:flex;
-    align-items:center;
-    width: 340px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    width: 350px;
     height: 50px;
-    border: 2px, groove;
+    border: 2px, none;
     align-content: center;
-    border-radius:15px;
+    border-radius: 15px;
+    background: #5BBC99;
+    box-shadow:#012c1491 1px 1px inset;
 }
 
 .mtp{
-    margin-top:50px;
+    margin-left:30px;
 }
 
 .svg{
