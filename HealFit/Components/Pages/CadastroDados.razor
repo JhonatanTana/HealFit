@@ -7,8 +7,9 @@
 @inject NavigationManager Navigation
 @inject CepService CepService
 
-<div class="slider-container justify-content-center">
+<div class="slider-container justify-content-center MudaPagina">
 
+    <! -- Slider Dados pessoais -->
     <div class="slider" style="transform: translateX(@(currentSlide * -100)%);">
         <div class="slide">
             <div class="mb-3">
@@ -24,6 +25,8 @@
                 <input type="date" name="Data de Nascimento" @bind="cadastraDadosDTO.DataNascimento" class=" Entradas p-3" />
             </div>
         </div>
+
+        <! -- Slider Peso e Altura -->
         <div class="slide">
             <div class="mb-3">
                 <a>Altura (Metros)</a>
@@ -34,8 +37,9 @@
                 <input type="number" name="Peso" @bind="cadastraDadosDTO.Peso" step="0.01" class=" Entradas p-3" />
             </div>
         </div>
-        <div class="slide">
 
+        <! -- Slider endereço -->
+        <div class="slide">
             <div class="">
                 <a>CEP</a>
                 <input type="number" name="Cep" placeholder="CEP" value="@cadastraDadosDTO.Cep" class=" Entradas p-3" @onchange="BuscarCep" />
@@ -66,8 +70,8 @@
                 </div>
         </div>
             <div class="slide">
-                <button type="submit" class="BtnCad" @onsubmit=(CadastrarDados)>Cadastrar</button>
-            </div>
+            <button type="submit" class="BtnCad" @onclick="CadastrarDados">Cadastrar</button>
+        </div>
     </div>
     <div class="gap-4 Espaco">
         <button @onclick="PreviousSlide" class="Butao">

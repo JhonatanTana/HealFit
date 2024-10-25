@@ -8,7 +8,7 @@ public static class MauiProgram {
         builder
             .UseMauiApp<App>()
             .ConfigureFonts(fonts => {
-                fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
+                fonts.AddFont("SourceCodePro-VariableFont_wght.ttf", "SourceCodePro");
             });
 
 

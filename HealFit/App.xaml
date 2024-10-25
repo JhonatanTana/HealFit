@@ -7,12 +7,12 @@
     <Application.Resources>
         <ResourceDictionary>
 
-            <Color x:Key="PageBackgroundColor">#fff</Color>
+            <Color x:Key="PageBackgroundColor">black</Color>
             <Color x:Key="PrimaryTextColor">White</Color>
 
             <Style TargetType="Label">
                 <Setter Property="TextColor" Value="{DynamicResource PrimaryTextColor}" />
-                <Setter Property="FontFamily" Value="OpenSansRegular" />
+                <Setter Property="FontFamily" Value="SourceCodePro" />
             </Style>
 
             <Style TargetType="Button">

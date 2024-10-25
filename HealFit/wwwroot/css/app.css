@@ -1,5 +1,29 @@
 ﻿html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background: rgb(42,210,66);
+    background: linear-gradient(90deg, rgba(145,233,201,1) 29%, rgba(219,240,233,1) 65%, rgba(255,255,255,1) 100%);
+    background-size: 200% 100%;
+    animation: gradient-animation 5s ease infinite;
+    min-block-size: 100vh;
+}
+
+@keyframes gradient-animation {
+    0% {
+        background-position: 0% 25%;
+
+    }
+
+    25% {
+        background-position: 25% 50%;
+    }
+
+    50% {
+        background-position: 50% 100%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
@@ -105,15 +129,13 @@ h1:focus {
     align-items: center;
     height: 100vh;
     z-index: -20;
-    background: rgb(42,210,149);
-    background: linear-gradient(234deg, rgba(42,210,149,1) 2%, rgba(145,233,201,1) 25%, rgba(228,245,240,1) 100%);
+    background:inherit;
 }
 
 
 .slider {
     display: flex;
     transition: transform 0.2s ease-in-out;
-    display: flex;
 }
 
 .slide {
@@ -150,6 +172,7 @@ h1:focus {
     margin-left:30px;
 }
 
-.svg{
-    
+.MudaPagina {
+    transition: transform 0.2s ease-in-out;
 }
+
