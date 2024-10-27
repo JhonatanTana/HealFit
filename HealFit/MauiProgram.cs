@@ -15,6 +15,7 @@ public static class MauiProgram {
         builder.Services.AddSingleton<IUsuarioService, UsuarioService>();
         builder.Services.AddSingleton<IDadosService, DadosService>();
         builder.Services.AddSingleton<IConsumoService, ConsumoService>();
+        builder.Services.AddSingleton<TranslationService>();
         builder.Services.AddSingleton<CepService>();
         builder.Services.AddSingleton<BaseUrlProvider>();
 

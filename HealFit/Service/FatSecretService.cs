@@ -3,8 +3,8 @@ using System.Text;
 
 public class FatSecretService {
     private readonly HttpClient _httpClient;
-    private readonly string _consumerKey = "682001a744f64cd49725ce016538a054 "; 
-    private readonly string _consumerSecret = "4a3bc38023d44c9e9fabe50ceb39a97c ";
+    private readonly string _consumerKey = "682001a744f64cd49725ce016538a054";
+    private readonly string _consumerSecret = "4a3bc38023d44c9e9fabe50ceb39a97c";
 
     public FatSecretService(HttpClient httpClient) {
         _httpClient = httpClient;
