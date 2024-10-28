@@ -3,24 +3,12 @@
   "WorkspaceRootPath": "D:\\Projetos\\VSCode\\HealFit\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{23C43B19-29B7-4AAA-87D1-2EE50181597A}|HealFit\\HealFit.csproj|d:\\projetos\\vscode\\healfit\\healfit\\components\\pages\\pesquisaproduto.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{23C43B19-29B7-4AAA-87D1-2EE50181597A}|HealFit\\HealFit.csproj|solutionrelative:healfit\\components\\pages\\pesquisaproduto.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{23C43B19-29B7-4AAA-87D1-2EE50181597A}|HealFit\\HealFit.csproj|d:\\projetos\\vscode\\healfit\\healfit\\service\\dadosservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{23C43B19-29B7-4AAA-87D1-2EE50181597A}|HealFit\\HealFit.csproj|solutionrelative:healfit\\service\\dadosservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{23C43B19-29B7-4AAA-87D1-2EE50181597A}|HealFit\\HealFit.csproj|d:\\projetos\\vscode\\healfit\\healfit\\components\\pages\\login.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{23C43B19-29B7-4AAA-87D1-2EE50181597A}|HealFit\\HealFit.csproj|solutionrelative:healfit\\components\\pages\\login.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{23C43B19-29B7-4AAA-87D1-2EE50181597A}|HealFit\\HealFit.csproj|d:\\projetos\\vscode\\healfit\\healfit\\service\\fatsecretservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{23C43B19-29B7-4AAA-87D1-2EE50181597A}|HealFit\\HealFit.csproj|solutionrelative:healfit\\service\\fatsecretservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{23C43B19-29B7-4AAA-87D1-2EE50181597A}|HealFit\\HealFit.csproj|d:\\projetos\\vscode\\healfit\\healfit\\service\\translationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{23C43B19-29B7-4AAA-87D1-2EE50181597A}|HealFit\\HealFit.csproj|solutionrelative:healfit\\service\\translationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{23C43B19-29B7-4AAA-87D1-2EE50181597A}|HealFit\\HealFit.csproj|d:\\projetos\\vscode\\healfit\\healfit\\mauiprogram.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{23C43B19-29B7-4AAA-87D1-2EE50181597A}|HealFit\\HealFit.csproj|solutionrelative:healfit\\mauiprogram.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{23C43B19-29B7-4AAA-87D1-2EE50181597A}|HealFit\\HealFit.csproj|d:\\projetos\\vscode\\healfit\\healfit\\components\\pages\\perfil.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{23C43B19-29B7-4AAA-87D1-2EE50181597A}|HealFit\\HealFit.csproj|solutionrelative:healfit\\components\\pages\\perfil.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -30,7 +18,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Bookmark",
@@ -46,67 +34,28 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "FatSecretService.cs",
-              "DocumentMoniker": "D:\\Projetos\\VSCode\\HealFit\\HealFit\\Service\\FatSecretService.cs",
-              "RelativeDocumentMoniker": "HealFit\\Service\\FatSecretService.cs",
-              "ToolTip": "D:\\Projetos\\VSCode\\HealFit\\HealFit\\Service\\FatSecretService.cs",
-              "RelativeToolTip": "HealFit\\Service\\FatSecretService.cs",
-              "ViewState": "AgIAABMAAAAAAAAAAADwv00AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-27T17:24:19.483Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "TranslationService.cs",
-              "DocumentMoniker": "D:\\Projetos\\VSCode\\HealFit\\HealFit\\Service\\TranslationService.cs",
-              "RelativeDocumentMoniker": "HealFit\\Service\\TranslationService.cs",
-              "ToolTip": "D:\\Projetos\\VSCode\\HealFit\\HealFit\\Service\\TranslationService.cs",
-              "RelativeToolTip": "HealFit\\Service\\TranslationService.cs",
-              "ViewState": "AgIAAAUAAAAAAAAAAAAxwA0AAABvAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-27T16:41:57.046Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "MauiProgram.cs",
-              "DocumentMoniker": "D:\\Projetos\\VSCode\\HealFit\\HealFit\\MauiProgram.cs",
-              "RelativeDocumentMoniker": "HealFit\\MauiProgram.cs",
-              "ToolTip": "D:\\Projetos\\VSCode\\HealFit\\HealFit\\MauiProgram.cs",
-              "RelativeToolTip": "HealFit\\MauiProgram.cs",
-              "ViewState": "AgIAAAcAAAAAAAAAAAAQwBEAAAA4AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-27T16:41:13.89Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "PesquisaProduto.razor",
-              "DocumentMoniker": "D:\\Projetos\\VSCode\\HealFit\\HealFit\\Components\\Pages\\PesquisaProduto.razor",
-              "RelativeDocumentMoniker": "HealFit\\Components\\Pages\\PesquisaProduto.razor",
-              "ToolTip": "D:\\Projetos\\VSCode\\HealFit\\HealFit\\Components\\Pages\\PesquisaProduto.razor",
-              "RelativeToolTip": "HealFit\\Components\\Pages\\PesquisaProduto.razor",
-              "ViewState": "AgIAAEwAAAAAAAAAAAAmwE0AAAAkAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-10-27T16:36:06.285Z",
+              "Title": "DadosService.cs",
+              "DocumentMoniker": "D:\\Projetos\\VSCode\\HealFit\\HealFit\\Service\\DadosService.cs",
+              "RelativeDocumentMoniker": "HealFit\\Service\\DadosService.cs",
+              "ToolTip": "D:\\Projetos\\VSCode\\HealFit\\HealFit\\Service\\DadosService.cs",
+              "RelativeToolTip": "HealFit\\Service\\DadosService.cs",
+              "ViewState": "AgIAAFcAAAAAAAAAAAAowG4AAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-28T00:07:15.066Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "Login.razor",
-              "DocumentMoniker": "D:\\Projetos\\VSCode\\HealFit\\HealFit\\Components\\Pages\\Login.razor",
-              "RelativeDocumentMoniker": "HealFit\\Components\\Pages\\Login.razor",
-              "ToolTip": "D:\\Projetos\\VSCode\\HealFit\\HealFit\\Components\\Pages\\Login.razor",
-              "RelativeToolTip": "HealFit\\Components\\Pages\\Login.razor",
-              "ViewState": "AgIAAD8AAAAAAAAAAAAAAEkAAAAMAAAAAAAAAA==",
+              "Title": "Perfil.razor",
+              "DocumentMoniker": "D:\\Projetos\\VSCode\\HealFit\\HealFit\\Components\\Pages\\Perfil.razor",
+              "RelativeDocumentMoniker": "HealFit\\Components\\Pages\\Perfil.razor",
+              "ToolTip": "D:\\Projetos\\VSCode\\HealFit\\HealFit\\Components\\Pages\\Perfil.razor",
+              "RelativeToolTip": "HealFit\\Components\\Pages\\Perfil.razor",
+              "ViewState": "AgIAABUAAAAAAAAAAAAAADIAAAAMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-10-27T03:12:04.298Z",
+              "WhenOpened": "2024-10-28T00:06:33.05Z",
               "EditorCaption": ""
             }
           ]
