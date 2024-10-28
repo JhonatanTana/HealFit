@@ -3,8 +3,12 @@
   "WorkspaceRootPath": "D:\\Projetos\\VSCode\\HealFit\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{23C43B19-29B7-4AAA-87D1-2EE50181597A}|HealFit\\HealFit.csproj|d:\\projetos\\vscode\\healfit\\healfit\\service\\dadosservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{23C43B19-29B7-4AAA-87D1-2EE50181597A}|HealFit\\HealFit.csproj|solutionrelative:healfit\\service\\dadosservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{23C43B19-29B7-4AAA-87D1-2EE50181597A}|HealFit\\HealFit.csproj|d:\\projetos\\vscode\\healfit\\healfit\\components\\pages\\porcoes.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{23C43B19-29B7-4AAA-87D1-2EE50181597A}|HealFit\\HealFit.csproj|solutionrelative:healfit\\components\\pages\\porcoes.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{23C43B19-29B7-4AAA-87D1-2EE50181597A}|HealFit\\HealFit.csproj|d:\\projetos\\vscode\\healfit\\healfit\\model\\produtoconsumido.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{23C43B19-29B7-4AAA-87D1-2EE50181597A}|HealFit\\HealFit.csproj|solutionrelative:healfit\\model\\produtoconsumido.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{23C43B19-29B7-4AAA-87D1-2EE50181597A}|HealFit\\HealFit.csproj|d:\\projetos\\vscode\\healfit\\healfit\\components\\pages\\perfil.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
@@ -18,7 +22,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Bookmark",
@@ -34,20 +38,33 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "DadosService.cs",
-              "DocumentMoniker": "D:\\Projetos\\VSCode\\HealFit\\HealFit\\Service\\DadosService.cs",
-              "RelativeDocumentMoniker": "HealFit\\Service\\DadosService.cs",
-              "ToolTip": "D:\\Projetos\\VSCode\\HealFit\\HealFit\\Service\\DadosService.cs",
-              "RelativeToolTip": "HealFit\\Service\\DadosService.cs",
-              "ViewState": "AgIAAFcAAAAAAAAAAAAowG4AAAAMAAAAAAAAAA==",
+              "DocumentIndex": 1,
+              "Title": "ProdutoConsumido.cs",
+              "DocumentMoniker": "D:\\Projetos\\VSCode\\HealFit\\HealFit\\Model\\ProdutoConsumido.cs",
+              "RelativeDocumentMoniker": "HealFit\\Model\\ProdutoConsumido.cs",
+              "ToolTip": "D:\\Projetos\\VSCode\\HealFit\\HealFit\\Model\\ProdutoConsumido.cs",
+              "RelativeToolTip": "HealFit\\Model\\ProdutoConsumido.cs",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAwwA4AAAAkAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-28T00:07:15.066Z",
+              "WhenOpened": "2024-10-28T12:27:01.819Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
+              "Title": "Porcoes.razor",
+              "DocumentMoniker": "D:\\Projetos\\VSCode\\HealFit\\HealFit\\Components\\Pages\\Porcoes.razor",
+              "RelativeDocumentMoniker": "HealFit\\Components\\Pages\\Porcoes.razor",
+              "ToolTip": "D:\\Projetos\\VSCode\\HealFit\\HealFit\\Components\\Pages\\Porcoes.razor",
+              "RelativeToolTip": "HealFit\\Components\\Pages\\Porcoes.razor",
+              "ViewState": "AgIAAAkBAAAAAAAAAAAAACsBAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-10-28T11:53:45.19Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "Perfil.razor",
               "DocumentMoniker": "D:\\Projetos\\VSCode\\HealFit\\HealFit\\Components\\Pages\\Perfil.razor",
               "RelativeDocumentMoniker": "HealFit\\Components\\Pages\\Perfil.razor",

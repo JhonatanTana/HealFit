@@ -58,6 +58,10 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Compile Remove="Model\Produto.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
       <None Remove="Resources\Fonts\SourceCodePro-VariableFont_wght.ttf" />
       <None Remove="Resources\Images\next.svg" />
     </ItemGroup>
