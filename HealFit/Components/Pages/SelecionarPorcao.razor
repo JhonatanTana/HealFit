@@ -7,6 +7,7 @@
 @using System
 @inject NavigationManager Navigation
 @inject FatSecretService FatSecret
+@inject TranslationService TranslationService
 
 <section class="content px-4">
 
@@ -18,14 +19,24 @@
             Voltar
         </button>
 
+        @if (loading) {
+
+            <div class="w-100 h-100 d-flex justify-content-center align-content-center z-3 position-absolute">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+
+        }
+
         @if (foodDetails != null) {
             <div>
                 <h4 class="align-self-center mt-2">@foodDetails.food_name</h4>
 
                 @if (foodDetails.servings != null && foodDetails.servings.Serving != null) {
                     @foreach (var serving in foodDetails.servings.Serving) {
-                        <div class=" border border-1 border-secondary- p-2 m-2 d-flex flex-row justify-content-between">
-                            <p>Descrição: @serving.serving_description</p>
+                        <div class="border border-1 border-secondary p-2 m-2 d-flex flex-row justify-content-between">
+                            <p>Descrição: @translatedDescriptions[serving.serving_description]</p>
                             <button class="btn btn-primary" @onclick="() => AdicionarConsumo(serving, foodDetails.food_name)">
                                 Selecionar
                             </button>
@@ -45,14 +56,41 @@
     [Parameter]
     public string ProdutoId { get; set; }
 
+    private bool loading = false;
     private string produtoPesquisa = string.Empty;
     private Food foodDetails;
+    private string translatedFoodName;
+    private Dictionary<string, string> translatedDescriptions = new Dictionary<string, string>();
 
     protected override async Task OnParametersSetAsync() {
-        // Busca automaticamente os detalhes do alimento se o ProdutoId for fornecido
-        if (!string.IsNullOrEmpty(ProdutoId) && int.TryParse(ProdutoId, out int foodId)) {
-            foodDetails = await GetFoodDetailsByIdAsync(foodId);
+
+        loading = true;
+
+        try {
+
+            if (!string.IsNullOrEmpty(ProdutoId) && int.TryParse(ProdutoId, out int foodId)) {
+
+                foodDetails = await GetFoodDetailsByIdAsync(foodId);
+
+                if (foodDetails != null) {
+                    // Traduz o nome do alimento
+                    translatedFoodName = await TranslationService.TranslateAsync(foodDetails.food_name, "pt");
+
+                    // Pré-processa as traduções das descrições das porções
+                    if (foodDetails.servings?.Serving != null) {
+                        foreach (var serving in foodDetails.servings.Serving) {
+                            var translatedDescription = await TranslationService.TranslateAsync(serving.serving_description, "pt");
+                            translatedDescriptions[serving.serving_description] = translatedDescription;
+                        }
+                        loading = false;
+                    }
+                }
+            }
+        }catch (Exception e) {
+
+            await DisplayAlert("Erro", $"{e}", "Ok");
         }
+
     }
 
     private void Pesquisar() {
@@ -65,21 +103,58 @@
     }
 
     public async Task<Food> GetFoodDetailsByIdAsync(int foodId) {
+        try {
 
-        if (foodId <= 0) {
-            throw new ArgumentException("ID do alimento inválido.", nameof(foodId));
+            if (foodId <= 0) {
+                await DisplayAlert("Erro", "ID do alimento inválido", "Ok");
+                return null;
+            }
+
+            var result = await FatSecret.GetFoodDetailsAsync(foodId.ToString());
+
+            if (string.IsNullOrEmpty(result)) {
+                await DisplayAlert("Erro", "Nenhum detalhe do alimento encontrado.", "Ok");
+                return null;
+            }
+
+            var foodDetails = JsonConvert.DeserializeObject<FoodDetailsResponse>(result)?.Food;
+
+            // Saneamento das descrições das porções
+            if (foodDetails?.servings?.Serving != null) {
+
+                foreach (var serving in foodDetails.servings.Serving) {
+                    serving.serving_description = SanitizeText(serving.serving_description);
+                }
+
+                return foodDetails;
+            }
+
+            return foodDetails;
+        }
+        catch (Exception e) {
+            await DisplayAlert("Erro", $"{e.Message}", "Ok");
         }
 
-        var result = await FatSecret.GetFoodDetailsAsync(foodId.ToString());
-
-        if (string.IsNullOrEmpty(result)) {
-            Console.WriteLine("Nenhum detalhe do alimento encontrado.");
-            return null;
-        }
-
-        var foodDetails = JsonConvert.DeserializeObject<FoodDetailsResponse>(result)?.Food;
-        return foodDetails;
+        return null;
     }
+
+    private string SanitizeText(string text) {
+        if (string.IsNullOrEmpty(text))
+            return text;
+
+        // Define os caracteres inválidos a serem removidos ou substituídos
+        var invalidChars = new[] { '@', '#', '$', '%', '^', '&', '*', '(', ')', '[', ']', '{', '}', '<', '>', '|', '\\', '/', '"' };
+        
+        foreach (var invalidChar in invalidChars) {
+            text = text.Replace(invalidChar.ToString(), "-"); // Remove o caractere
+        }
+
+        // Trate outros casos específicos de substituição, se necessário
+        text = text.Replace("/", "|").Replace("\n", " ").Replace("\r", " "); // Substitui "/" por "|", remove quebras de linha
+
+        return text;
+    }
+
 
     private void AdicionarConsumo(Serving serving, string food_name) {
         // Função para tratar valores nulos e formatar números
@@ -88,8 +163,8 @@
         }
 
         // Constrói a URL com todos os parâmetros
-        var url = $"/Porcao/{food_name}/{serving.serving_id}/" +
-                  $"{FormatValue(serving.serving_description)}/ " +
+        var url = $"/Porcao/{translatedFoodName}/{serving.serving_id}/" +
+                  $"{translatedDescriptions[serving.serving_description]}/ " +
                   $"{FormatValue(serving.metric_serving_amount)}/" +
                   $"{HttpUtility.UrlEncode(serving.metric_serving_unit ?? "unidade não disponível")}/" +
                   $"{FormatValue(serving.number_of_units)}/" +
@@ -121,6 +196,11 @@
 
         Navigation.NavigateTo(url);
         Console.WriteLine(url);
+    }
+
+    private async Task DisplayAlert(string titulo, string descricao, string confirmacao) {
+
+        await App.Current.MainPage.DisplayAlert(titulo, descricao, confirmacao);
     }
 
 }

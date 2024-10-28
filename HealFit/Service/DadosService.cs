@@ -99,7 +99,7 @@ public class DadosService : IDadosService {
             }
 
             using (var client = new HttpClient()) {
-                var url = $"{base_url}/Dados/{id}";
+                var url = $"{base_url}/Dados/Usuario/{id}";
                 var apiResponse = await client.GetAsync(url);
 
                 if (apiResponse.StatusCode == System.Net.HttpStatusCode.OK) {
