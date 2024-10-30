@@ -19,16 +19,6 @@
 
     <main class="mt-4">
 
-        @if (loading) {
-
-            <div class="w-100 h-100 d-flex justify-content-center align-content-center z-3 position-absolute">
-                <div class="spinner-border text-primary" role="status">
-                    <span class="visually-hidden">Loading...</span>
-                </div>
-            </div>
-
-        }
-
         @foreach (var produto in produtosConsumidos) {
 
             <div class="m-2 p-2 border border-1 border-secondary d-flex flex-row justify-content-between align-items-center">
@@ -52,11 +42,9 @@
 
     private List<ProdutoConsumido> produtosConsumidos = new List<ProdutoConsumido>();
     private DateTime dataPesquisada = DateTime.Now;
-    private bool loading = false;
 
     private async Task BuscarConsumo() {
 
-        loading = true;
         var usuarioIdStr = await JS.InvokeAsync<string>("localStorage.getItem", "usuarioId");
 
         if (int.TryParse(usuarioIdStr, out var usuarioId)) {
@@ -64,7 +52,6 @@
             string dataFormatada = dataPesquisada.ToString("yyyy-MM-dd");
 
             produtosConsumidos = await ConsumoService.GetAllConsumoByDate(usuarioId, dataFormatada);
-            loading = false;
         }
         else {
             await DisplayAlert("Erro", "ID de usuário inválido ou não encontrado", "Ok");

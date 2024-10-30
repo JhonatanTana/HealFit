@@ -7,6 +7,4 @@ public class Food {
     public string food_url { get; set; }
     public string brand_name { get; set; }
     public Servings servings { get; set; }
-    public string? TranslatedFoodName { get; set; } // Nova propriedade para armazenar o nome traduzido
-
 }

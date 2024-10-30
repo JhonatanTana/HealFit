@@ -4,7 +4,6 @@
 @using Newtonsoft.Json
 @inject NavigationManager Navigation
 @inject FatSecretService FatSecret
-@inject TranslationService TranslationService
 
 <section class="content px-4">
 
@@ -23,21 +22,10 @@
     </section>
 
     <main class="mt-2 h-85 overflow-auto">
-
-        @if(loading) {
-
-            <div class="w-100 h-100 d-flex justify-content-center align-content-center z-3 position-absolute">
-                <div class="spinner-border text-primary" role="status">
-                    <span class="visually-hidden">Loading...</span>
-                </div>
-            </div>
-            
-        }
-
         @if (SearchResults != null) {
             @foreach (var food in SearchResults.Foods.Food) {
                 <div class="p-2 m-2 border border-secundary d-flex align-items-center justify-content-between">
-                    <span>@food.TranslatedFoodName</span>
+                    <span style="color:red">@food.food_name</span>
                     <button class="btn btn-primary" @onclick="() => Selecionar(food.food_id)">Adicionar</button>
                 </div>
             }
@@ -49,7 +37,6 @@
 @code {
     private string FoodName { get; set; } = string.Empty;
     private FoodSearchResult SearchResults { get; set; }
-    private bool loading = false;
 
     private void Voltar() {
         Navigation.NavigateTo("ConsumoDiario");
@@ -60,30 +47,15 @@
     }
 
     private async Task BuscarAlimentosAsync() {
-
-        loading = true;
-
         if (!string.IsNullOrWhiteSpace(FoodName)) {
-            // Traduza o nome do alimento antes de buscar
-            string translatedFoodName = await TranslationService.TranslateAsync(FoodName, "en");
-
-            // Busque os alimentos usando o nome traduzido
-            var result = await FatSecret.SearchFoodsAsync(translatedFoodName);
-            SearchResults = await ParseSearchResults(result);
-
-            // Traduza o nome de cada alimento nos resultados
-            if (SearchResults != null && SearchResults.Foods != null) {
-                foreach (var food in SearchResults.Foods.Food) {
-                    food.TranslatedFoodName = await TranslationService.TranslateAsync(food.food_name, "pt"); // Traduza o nome original para português
-                    loading = false;
-                }
-            }
-
+            var result = await FatSecret.SearchFoodsAsync(FoodName);
+            SearchResults = ParseSearchResults(result);
             StateHasChanged(); // Atualize a interface do usuário
         }
     }
 
-    private async Task<FoodSearchResult> ParseSearchResults(string jsonResponse) {
+    private FoodSearchResult ParseSearchResults(string jsonResponse) {
+
         if (string.IsNullOrEmpty(jsonResponse)) {
             return null;
         }
@@ -91,20 +63,14 @@
         try {
             var searchResult = JsonConvert.DeserializeObject<FoodSearchResult>(jsonResponse);
             if (searchResult.Foods == null || searchResult.Foods.Food == null) {
-                await DisplayAlert("Erro", "A resposta JSON não contém dados válidos.", "Ok");
+                Console.WriteLine("A resposta JSON não contém dados válidos.");
                 return null;
             }
             return searchResult;
         }
         catch (JsonException ex) {
-            await DisplayAlert("Erro", $"{ex.Message}", "Ok");
+            Console.WriteLine($"Erro ao desserializar a resposta JSON: {ex.Message}");
             return null;
         }
-    }
-
-
-    private async Task DisplayAlert(string titulo, string descricao, string confirmacao) {
-
-        await App.Current.MainPage.DisplayAlert(titulo, descricao, confirmacao);
     }
 }
