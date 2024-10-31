@@ -1,11 +1,16 @@
 ﻿html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    background: rgb(101,143,251);
-    background: linear-gradient(127deg, rgba(101,143,251,1) 2%, rgba(153,144,247,1) 29%, rgba(141,226,236,1) 65%, rgba(255,255,255,1) 86%);
+    background: rgb(0,3,40);
+    background: linear-gradient(180deg, rgba(0,3,40,1) 0%, rgba(0,31,54,1) 100%);
     background-size: 200% 100%;
     animation: gradient-animation 6s ease infinite;
     min-block-size: 100vh;
 }
+
+* {
+    color: white;
+}
+
 
 @keyframes gradient-animation {
     0% {
@@ -194,9 +199,6 @@ h1:focus {
 .mtp{
     margin-left:100px;
 }
-.mtr{
-    
-}
 
 .MudaPagina {
     transition: transform 0.2s ease-in-out;
@@ -205,4 +207,30 @@ h1:focus {
 .bginh{
     background:#ffffff99;
     border-radius:15px 15px;
+}
+
+.footer {
+    position: fixed;
+    height:80px;
+    bottom: 0;
+    width: 100%;
+    background-color: #00000073;
+    text-align: center;
+    padding: 10px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 15px; 
+}
+
+.fontepequena{
+    font-size:14px;
+}
+
+.btnFooter {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    outline: none;
+    color: #f7f7f7;
 }
