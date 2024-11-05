@@ -10,15 +10,15 @@
 
     <h3 class="mb-3">Login</h3>
 
-    <EditForm Model="requestUsuarioDTO" OnSubmit="Logar" class="flex flex-column w-100">
+    <EditForm Model="requestUsuarioDTO" OnSubmit="Logar" class="flex flex-column w-100 fontepreta">
         <div class="mb-3">
-            <input type="email" @bind="requestUsuarioDTO.Email" placeholder="Email" name="name" class="w-100 p-2 rounded border border-1 border-secondary" />
+            <input type="email" @bind="requestUsuarioDTO.Email" placeholder="Email" name="name" class="w-100 p-2 rounded border border-1 border-secondary fontepreta" />
         </div>
         <div class="mb-3">
-            <input type="password" @bind="requestUsuarioDTO.Senha" placeholder="Senha" name="name" class="w-100 p-2 rounded border border-1 border-secondary" />
+            <input type="password" @bind="requestUsuarioDTO.Senha" placeholder="Senha" name="name" class="w-100 p-2 rounded border border-1 border-secondary fontepreta" />
         </div>
         <div class="mb-3">
-            <input type="checkbox" @bind="lembrarUsuario" /> Lembrar de mim
+            <input type="checkbox" @bind="lembrarUsuario" /> Lembrar de mim 
         </div>
         <button type="submit" class="btn btn-primary w-100">Login</button>
 

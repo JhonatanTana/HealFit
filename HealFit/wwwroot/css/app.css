@@ -1,14 +1,15 @@
 ﻿html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    background: rgb(0,3,40);
-    background: linear-gradient(180deg, rgba(0,3,40,1) 0%, rgba(0,31,54,1) 100%);
-    background-size: 200% 100%;
+    background: rgb(10,90,92);
+    background: linear-gradient(210deg, rgba(10,90,92,0.8) 25%, rgba(2,238,192,0.8) 60%, rgba(44,238,255,.7) 100%);
+    background-size: 100% 100%;
     animation: gradient-animation 6s ease infinite;
     min-block-size: 100vh;
 }
 
 * {
     color: white;
+
 }
 
 
@@ -205,7 +206,7 @@ h1:focus {
 }
 
 .bginh{
-    background:#ffffff99;
+    background:#00000059;
     border-radius:15px 15px;
 }
 
@@ -233,4 +234,8 @@ h1:focus {
     overflow: hidden;
     outline: none;
     color: #f7f7f7;
+}
+
+.fontepreta{
+    color:black;
 }
