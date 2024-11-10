@@ -4,7 +4,7 @@ public class DadosPessoais {
     public int DadosId { get; set; }
     public string Nome { get; set; }
     public string Sobrenome { get; set; }
-    public DateTime DataNascimento { get; set; }
+    public DateTime DataNascimento { get; set; } = DateTime.UtcNow;
     public decimal Altura { get; set; }
     public decimal Peso { get; set; }
     public string Cep { get; set; }
