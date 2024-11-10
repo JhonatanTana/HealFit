@@ -5,11 +5,17 @@
     background-size: 100% 100%;
     animation: gradient-animation 6s ease infinite;
     min-block-size: 100vh;
+    padding-bottom:50px;
+
 }
 
 * {
     color: white;
 
+}
+
+main{
+    padding-bottom:50px;
 }
 
 
@@ -221,6 +227,7 @@ h1:focus {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 15px; 
+    z-index:1000;
 }
 
 .fontepequena{
@@ -238,4 +245,16 @@ h1:focus {
 
 .fontepreta{
     color:black;
+}
+
+
+.active-icon {
+    color:red;
+    fill: #e50000; /* Altere para a cor que preferir */
+    stroke: #e50000; /* Caso tenha stroke no seu SVG */
+}
+
+.inactive-icon {
+    fill: #FFFFFF; /* Cor padrão */
+    stroke: #FFFFFF; /* Cor padrão */
 }
