@@ -1,5 +1,8 @@
 ﻿using HealFit.Model;
+using Microsoft.Maui.ApplicationModel;
+using Microsoft.Maui.Controls;
 using Microsoft.Maui.Controls.PlatformConfiguration;
+using Microsoft.Maui.Storage;
 using Newtonsoft.Json;
 using System.Text;
 

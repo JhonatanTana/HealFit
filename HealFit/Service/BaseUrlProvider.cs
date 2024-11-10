@@ -1,4 +1,6 @@
-﻿namespace HealFit.Service;
+﻿using Microsoft.Maui.Storage;
+
+namespace HealFit.Service;
 public class BaseUrlProvider {
     public string BaseUrl { get; private set; }
 

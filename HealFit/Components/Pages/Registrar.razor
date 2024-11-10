@@ -3,6 +3,7 @@
 @using AutoMapper
 @using HealFit.Model
 @using HealFit.Service
+@using Microsoft.Maui.Controls
 @inject IUsuarioService UsuarioService
 @inject NavigationManager Navigation
 @inject IJSRuntime JS
@@ -50,11 +51,11 @@
 
     private async Task RegistrarUsuario() {
 
-        if (registroUsuarioDTO.Senha != ConfSenha) {
+        // if (registroUsuarioDTO.Senha != ConfSenha) {
 
-            await DisplayAlert("Erro", "As senhas não coincidem", "Ok");
-            return;
-        }
+        //     await DisplayAlert("Erro", "As senhas não coincidem", "Ok");
+        //     return;
+        // }
 
         if (UsuarioId > 0) {
 
