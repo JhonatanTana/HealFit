@@ -5,8 +5,7 @@
     background-size: 100% 100%;
     animation: gradient-animation 6s ease infinite;
     min-block-size: 100vh;
-    padding-bottom:50px;
-
+    padding-bottom: 50px;
 }
 
 * {
@@ -121,30 +120,10 @@ h1:focus {
 .Butao {
     width: fit-content;
     height: 100px;
-    width:100px;
-    border-radius:100px 100px;
-    background-color: none;
-    background:none;
-    border:none;
-    animation:piscar linear infinite 5s;
-}
-
-@keyframes piscar{
-
-    0% {
-        background-color: #ffffff6e;
-    }
-    50%{
-        background-color:#ffffff59;
-    }
-
-    75%{
-        background-color:#ffffff00
-    }
-
-    100%{
-        background-color:#ffffff6e;
-    }
+    width: 100px;
+    border-radius: 100px 100px;
+    background-color:#7b979f;
+    border: none;
 
 }
 
@@ -155,8 +134,8 @@ h1:focus {
     height: 60px;
     border: 1px, outset, #0000007b;
     border-radius: 15px;
-    background:#ffffff30;
-    font:x-large;
+    background: #ffffff22;
+    font: x-large;
 }
 
 .slider-container {
@@ -203,8 +182,19 @@ h1:focus {
     box-shadow:#012c1491 1px 1px inset;
 }
 
+input::placeholder{
+    opacity:0.5;
+    color:black;
+}
+
 .mtp{
-    margin-left:100px;
+    left:10px;
+    position:absolute;
+}
+
+.mtr{
+    position:absolute;
+    right:10px;
 }
 
 .MudaPagina {
@@ -249,12 +239,49 @@ h1:focus {
 
 
 .active-icon {
-    color:red;
-    fill: #e50000; /* Altere para a cor que preferir */
-    stroke: #e50000; /* Caso tenha stroke no seu SVG */
+    color: lightseagreen;
+    fill: rgba(10,90,92,0.8); /* Altere para a cor que preferir */
+    stroke: rgba(10,90,92,0.8); /* Caso tenha stroke no seu SVG */
 }
 
 .inactive-icon {
-    fill: #FFFFFF; /* Cor padrão */
-    stroke: #FFFFFF; /* Cor padrão */
+    fill: #ffffff6e; /* Cor padrão */
+    stroke: #ffffff6e; /* Cor padrão */
 }
+
+.Titulo{
+    background:#ffffff3f;
+    width:44vh;
+    display:flex;
+    align-content:center;
+    justify-content:center;    
+}
+
+.LoginPage{
+    height:100vh;
+    width:100vh;
+
+}
+.ButaoPalmutiGostaDeNovinhaLogin {
+    width: fit-content;
+    height: 50px;
+    width: 100px;
+    border-radius: 100px 100px;
+    background-color: #00000019;
+    background: rgb(0, 23, 23, 0,55);
+    border: none;
+    animation: piscar linear infinite 5s;
+}
+
+.ButaoPalmutiGostaDeNovinha {
+    width: fit-content;
+    height: 50px;
+    width: 100px;
+    border-radius: 100px 100px;
+    background-color: #00000019;
+    background: #0000008e;
+    border: none;
+    animation: piscar linear infinite 5s;
+}
+
+
